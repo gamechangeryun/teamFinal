@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+  
+  <tiles-definitions>
+  	<definition name="base_layout" template="/WEB-INF/view/template/layout.jsp">
+  		<put-attribute name="header" value="/WEB-INF/view/template/header.jsp" />
+  		<put-attribute name="nav" value="/WEB-INF/view/template/nav.jsp" />
+  		<put-attribute name="footer" value="/WEB-INF/view/template/footer.jsp" />
+  	</definition>
+  	
+  	<definition name="studentPage" extends="base_layout">
+  		<put-attribute name="title" value="학생메인페이지" />
+  		<put-attribute name="body" value="/WEB-INF/view/mainPage/studentPage.jsp" />
+  	</definition>
+  	
+  	<definition name="professorPage" extends="base_layout">
+  		<put-attribute name="title" value="교수메인페이지" />
+  		<put-attribute name="body" value="/WEB-INF/view/mainPage/professorPage.jsp" />
+  	</definition>
+  	
+  	<definition name="facultyPage" extends="base_layout">
+  		<put-attribute name="title" value="교직원메인페이지" />
+  		<put-attribute name="body" value="/WEB-INF/view/mainPage/facultyPage.jsp" />
+  	</definition>
+  	
+  	<definition name="guestPage" extends="base_layout">
+  		<put-attribute name="title" value="게스트메인페이지" />
+  		<put-attribute name="body" value="/WEB-INF/view/mainPage/guestPage.jsp" />
+  	</definition>
+  	
+
+  
+  </tiles-definitions>

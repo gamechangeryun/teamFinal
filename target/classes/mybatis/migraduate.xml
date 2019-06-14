@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="migramapper">
+
+	<select id="getList" parameterType="map" resultType="mi.gra.board.model.graDTO">
+		select temper_name, id, name, totalaverage, rn
+		from(select temper_name, id, name, totalaverage, rownum rn
+		from totalscore natural join temper natural join person)
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 인원 찾기 -->
+	<select id="searchName" parameterType="String" resultType="mi.gra.board.model.graDTO">
+		select id, name, rn, temper_num, temper_name, totalaverage
+		from (select id, name, rownum rn, temper_num, temper_name, totalaverage
+		from totalscore natural join temper natural join person) 
+		where temper_num like '%'||#{searchContent}||'%'
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="count" resultType="int">
+		select count(*) from job_bd
+	</select>
+	
+</mapper>

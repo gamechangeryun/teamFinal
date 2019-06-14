@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProNoticeBoardMapper">
+	<!-- 메인 글 -->
+	<!-- 글 목록 찾기 -->
+	<select id="getTotalList" resultType="sr.pro.notice.model.PronoticeDTO">
+		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
+		from(select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn from pro_notice_bd)
+		where rn between #{startRow} and #{endRow}
+		order by rn asc
+	</select>
+	
+	<!-- 제목으로 글 찾기 -->
+	<select id="searchTitle" parameterType="map" resultType="sr.pro.notice.model.PronoticeDTO">
+		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
+		from (select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn 
+				from pro_notice_bd
+				where title like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!--내용으로 글 찾기 -->
+	<select id="searchContent" parameterType="map" resultType="sr.pro.notice.model.PronoticeDTO">
+		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
+		from (select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn 
+				from pro_notice_bd
+				where content like '%'||#{searchContent}||'%') 
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 강의번호로 글 찾기 -->
+	<select id="searchWriter" parameterType="map" resultType="sr.pro.notice.model.PronoticeDTO">
+		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
+		from (select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn 
+				from pro_notice_bd
+				where lecture_num like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="countContent" resultType="int">
+		select count(*) from pro_notice_bd
+	</select>
+	
+	<!-- 제목으로 글 찾기 개수 -->
+	<select id="searchTitleCount" parameterType="String" resultType="String">
+		select count(*)
+		from pro_notice_bd
+		where title like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!--내용으로 글 찾기 개수 -->
+	<select id="searchContentCount" parameterType="String" resultType="String">
+		select count(*)
+		from pro_notice_bd 
+		where content like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 강의번호로 글 찾기 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from pro_notice_bd
+		where lecture_num like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- ================================================================================================ -->
+	<!-- 글 추가 -->
+	<insert id="insertContent" parameterType="sr.pro.notice.model.PronoticeDTO">
+		insert into pro_notice_bd
+		values(pro_notice_bd_sq.nextval, #{lecture_num}, #{title}, #{content}, sysdate, #{readcount}, #{isnotice})
+	</insert>
+	
+	<!-- ======================================================================================== -->
+	<!-- 조회수 올리기 -->
+	<update id="addReadCount" parameterType="map">
+		update pro_notice_bd
+		set readcount=#{readcount}
+		where num=#{num}
+	</update>
+	
+	<!-- 글 상세보기 -->
+	<select id="detailContent" parameterType="int" resultType="sr.pro.notice.model.PronoticeDTO">
+		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
+		from(select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn from pro_notice_bd)
+		where num=#{num}
+	</select>
+	
+	<!-- =============================================================================================== -->
+	<!-- 글 수정 -->
+	<update id="updateContent" parameterType="sr.pro.notice.model.PronoticeDTO">
+		update pro_notice_bd
+		set num=#{num}, lecture_num=#{lecture_num}, title=#{title}, content=#{content}, writedate=#{writedate}, isnotice=#{isnotice}
+		where num=#{num}
+	</update>
+	
+	<!-- =================================================================================================== -->
+	
+	<!-- 글 삭제 -->
+	<delete id="deleteContent" parameterType="int">
+		delete from pro_notice_bd where num=#{num}
+	</delete>
+	
+</mapper>

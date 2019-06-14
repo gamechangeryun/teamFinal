@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="canceledLecture">
+	
+	<!-- 강의리스트 불러오기 -->
+	<select id="getLectureList" parameterType="int" resultType="js.lectureapply.model.LectureApplyDTO">
+		select lecture_num, lecture_title from lecturelist where id=#{id}
+	</select>
+	
+	<!-- 휴강신청서 제출 -->
+	<insert id="insertCanceledLecture" parameterType="js.canceledlecture.model.CanceledLectureDTO">
+		insert into canceledlecture
+		values(#{lecture_num}, #{id}, #{canceled_date}, #{canceled_reason}, #{supply_date}, sysdate)
+	</insert>
+	
+	<!-- ========================================================================================= -->
+	<!-- 메인 글 -->
+	<!-- 휴학신청자 리스트 가져오기 -->
+	<select id="getCanceledLectureList" parameterType="map" resultType="js.canceledlecture.model.CanceledLectureDTO">
+		select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rn
+		from(select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rownum rn 
+			from canceledlecture natural join lecturelist natural join person natural join temper)
+		where rn between #{startRow} and #{endRow}
+		order by rn asc
+	</select>
+	
+	<!-- 학번으로 휴학신청 찾기 -->
+	<select id="searchId" parameterType="map" resultType="js.canceledlecture.model.CanceledLectureDTO">
+		select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rn
+		from (select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rownum rn 
+				from canceledlecture natural join lecturelist natural join person natural join temper
+				where id like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 학과으로 휴학신청 찾기 -->
+	<select id="searchTemperName" parameterType="map" resultType="js.canceledlecture.model.CanceledLectureDTO">
+		select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rn 
+		from (select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rownum rn 
+				from canceledlecture natural join lecturelist natural join person natural join temper
+				where temper_name like '%'||#{searchContent}||'%') 
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 작성자으로 휴학신청 찾기 -->
+	<select id="searchWriter" parameterType="map" resultType="js.canceledlecture.model.CanceledLectureDTO">
+		select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rn 
+		from (select lecture_num, lecture_title, id, name, temper_name, canceled_date, canceled_reason, supply_date, applydate, rownum rn 
+				from canceledlecture natural join lecturelist natural join person natural join temper
+				where name like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="countContent" resultType="int">
+		select count(*) from canceledlecture
+	</select>
+	
+	<!-- 학번으로 휴학신청 개수 -->
+	<select id="searchIdCount" parameterType="String" resultType="String">
+		select count(*)
+		from canceledlecture
+		where id like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!--학과로 휴학신청 개수 -->
+	<select id="searchTemperNameCount" parameterType="String" resultType="String">
+		select count(*)
+		from canceledlecture natural join person natural join temper
+		where temper_name like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자로 휴학신청 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from canceledlecture natural join person natural
+		where name like '%'||#{searchContent}||'%'
+	</select>
+	<!-- ============================================================================== -->
+	<!-- 휴강테이블에 추가 -->
+	<insert id="insertCanceled" parameterType="js.canceledlecture.model.CanceledLectureDTO">
+		insert into canceledlist
+		values(#{lecture_num}, #{id}, #{canceled_date}, #{canceled_reason}, #{supply_date})
+	</insert>
+	
+	<!-- 휴강신청 테이블에서 삭제 -->
+	<delete id="deleteCanceledList" parameterType="int">
+		delete from canceledlecture
+		where id=#{id}
+	</delete>
+	<!-- ================================================================================== -->
+	<!-- 허용된 휴강신청리스트 확인 -->
+	<select id="getSubmitCanceledList" parameterType="int" resultType="js.canceledlecture.model.CanceledLectureDTO">
+		select lecture_num, lecture_title, canceled_date, canceled_reason, supply_date 
+		from canceledlist natural join lecturelist where id=#{id}
+	</select>
+	
+	
+
+</mapper>

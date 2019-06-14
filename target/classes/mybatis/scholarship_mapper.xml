@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="scholarship">
+
+	<!-- 장학금 리스트 가져오기 -->
+	<select id="getScholarship" parameterType="map" resultType="js.scholarship.model.ScholarshipDTO">
+		select id, name, temper_name, scholarship_name, scholarship_money, scholarship_num, scholarship_semester, rn
+		from (select id, name, temper_name, scholarship_name, scholarship_money, scholarship_num, scholarship_semester, rownum rn from scholarship natural join person natural join temper)
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="countContent" resultType="int">
+		select count(*) from scholarship
+	</select>
+	
+	<!-- 학과별 장학금 리스트 가져오기 -->
+	<select id="getScholarshipSelect" parameterType="map"  resultType="js.scholarship.model.ScholarshipDTO">
+		select id, name, temper_name, scholarship_name, scholarship_money, scholarship_num, scholarship_semester
+		from (select id, name, temper_name, scholarship_name, scholarship_money, scholarship_num, scholarship_semester, rownum rn
+              from scholarship natural join person natural join temper
+              where temper_num=#{temper_num})
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+</mapper>

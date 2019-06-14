@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="totalScore">
+	
+	<!-- 학기 개수 가져오기 -->
+	<select id="countSemester" parameterType="int" resultType="int">
+		select count(semester) from semesterscore where id=#{id}
+	</select>
+	
+	<!-- 학기별성적 테이블에서 이수학점들과  학기평점들 들고오기 -->
+	<select id="getSemesterInfo" parameterType="int" resultType="js.semesterscore.model.SemesterScoreDTO">
+		select semesterpoint, semesteraverage
+		from semesterscore
+		where id=#{id}
+	</select>
+	
+	<!-- 총학기 성적 테이블에 데이터가 있는지 확인 -->
+	<select id="getTotalScoreInfo" parameterType="int" resultType="int">
+		select count(*) from totalscore where id=#{id}
+	</select>
+	
+	<!-- 데이터가 없다면 총학기성적 테이블에 데이터 저장 -->
+	<insert id="insertTotalScore" parameterType="js.totalscore.model.TotalScoreDTO">
+		insert into totalscore
+		values(#{id}, #{totalaverage}, #{maxpoint}, #{nowpoint})
+	</insert>
+	
+	<!-- 데이터가 있다면 총학기성적 테이블에 데이터 수정 -->
+	<update id="updateTotalScore" parameterType="js.totalscore.model.TotalScoreDTO">
+		update totalscore
+		set id=#{id}, totalaverage=#{totalaverage}, maxpoint=#{maxpoint}, nowpoint=#{nowpoint}
+		where id=#{id}
+	</update>
+	
+	<!-- =========================================================================== -->
+	<select id="getTotalScore" parameterType="int" resultType="js.totalscore.model.TotalScoreDTO">
+		select id, name, temper_name, totalaverage, maxpoint, nowpoint
+		from totalscore natural join person natural join temper
+		where id=#{id}
+	</select>
+
+</mapper>

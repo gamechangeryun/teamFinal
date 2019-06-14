@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="personSql">
+	<!-- 모든 person 출력 -->
+	<select id="selectAllPerson" resultType="wj.person.model.PersonDto">
+		select *
+		from person
+		order by id
+	</select>
+	
+	<!-- page person 출력 -->
+	<select id="selectPagePerson" parameterType="int" resultType="wj.person.model.PersonDto">
+		select rn, id, temper_num, password, name, gender, birthday, grade, phone, email, postcode, address1, address2
+		from(
+			select rownum rn, id, temper_num, password, name, gender, birthday, grade, phone, email, postcode, address1, address2
+			from(
+			    select *
+			    from person
+			    order by id))
+		where rn between #{start} and #{start}+4
+	</select>
+
+	<!-- search person 출력 -->
+	<select id="selectAllSearchPerson" parameterType="map" resultType="wj.person.model.PersonDto">
+		select *
+		from person
+		<where>
+			<!-- options=0 name -->
+			<if test="searchOption == 0">
+				name like '%'||#{searchString}||'%'
+			</if>
+			<!-- options=1 grade -->
+			<if test="searchOption == 1">
+				and grade like '%'||#{searchString}||'%'
+			</if>
+			<!-- options=2 temper_num -->
+			<if test="searchOption == 2">
+				and temper_num like '%'||#{searchString}||'%'
+			</if>
+		</where>
+		order by id
+	</select>
+	
+	<!-- search page person 출력 -->
+	<select id="selectPageSearchPerson" parameterType="map" resultType="wj.person.model.PersonDto">
+		select rn, id, temper_num, password, name, gender, birthday, grade, phone, email, postcode, address1, address2
+		from(
+			select rownum rn, id, temper_num, password, name, gender, birthday, grade, phone, email, postcode, address1, address2
+			from(
+			    select *
+				from person
+				<where>
+					<!-- options=0 name -->
+					<if test="searchOption == 0">
+						name like '%'||#{searchString}||'%'
+					</if>
+					<!-- options=1 grade -->
+					<if test="searchOption == 1">
+						and grade like '%'||#{searchString}||'%'
+					</if>
+					<!-- options=2 temper_num -->
+					<if test="searchOption == 2">
+						and temper_num like '%'||#{searchString}||'%'
+					</if>
+				</where>
+				order by id))
+		where rn between #{start} and #{start}+4
+	</select>
+	
+	<insert id="insertPerson" parameterType="wj.person.model.PersonDto">
+		insert into person
+		values (#{id}, #{temper_num}, #{password}, #{name}, #{gender}, #{birthday}, #{grade}, #{phone}, #{email}, #{postcode}, #{address1}, #{address2})
+	</insert>
+	
+	<select id="selectMaxId" parameterType="int" resultType="int">
+		select substr(max(id),8,2)
+		from person
+		where substr(id, 1, 7)=#{id}
+	</select>
+	
+	<select id="selectTemperForStudentAndProfessor" resultType="wj.person.model.TemperDto">
+		select *
+		from temper
+		where temper_num between 0 and 89
+		order by temper_num asc
+	</select>
+	<select id="selectTemperForFaculty" resultType="wj.person.model.TemperDto">
+		select *
+		from temper
+		where temper_num between 90 and 99
+		order by temper_num asc
+	</select>
+	
+	<select id="selectTemper_num" parameterType="String" resultType="int">
+		select temper_num
+		from temper
+		where temper_name=#{temper_name}
+	</select>
+	
+	<insert id="insertPicture" parameterType="wj.person.model.PictureDto">
+		insert into picture
+		values (#{id}, #{realname}, #{realpath}, #{realsize})
+	</insert>
+	
+</mapper>

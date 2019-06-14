@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mijobmapper">
+
+<!-- 글 목록 찾기 -->
+	<select id="getList" parameterType="map" resultType="mi.job.board.model.DTO">
+		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
+		from(select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename 
+		from job_file natural join job_bd natural join person)
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글 추가 -->
+	<insert id="insertContent" parameterType="mi.job.board.model.DTO">
+		insert into job_bd
+		values(job_bd_seq.nextval, #{id}, #{title}, #{content}, sysdate, #{readcount}, #{isnotice})
+	</insert>
+	
+	<!-- 글 상세보기 -->
+	<select id="detailContent" parameterType="int" resultType="mi.job.board.model.DTO">
+		select num, id, name, title, content, writedate, readcount, isnotice, rn
+		from (select num, id, name, title, content, writedate, readcount, isnotice, rownum rn from job_bd natural join person)
+		where num=#{num}
+	</select>
+	
+	<!-- 조회수 올리기 -->
+	<update id="addReadCount" parameterType="map">
+		update job_bd
+		set readcount=#{readcount}
+		where num=#{num}
+	</update>
+
+	<!-- 글 수정 -->
+	<update id="updateContent" parameterType="mi.job.board.model.DTO">
+		update job_bd
+		set num=#{num}, id=#{id}, title=#{title}, content=#{content}, writedate=sysdate, readcount=#{readcount}, isnotice=#{isnotice}
+		where num=#{num}
+	</update>
+	
+	<!-- 글 수정 파일 수정 -->
+	<insert id="changeUpdateFile" parameterType="mi.job.board.model.DTO">
+		update job_file
+		set num=#{num}, realname=#{realname}, realpath=#{realpath}, realsize=#{realsize}, fakename=#{fakename}
+		where num=#{num}
+	</insert>  
+	
+	<!-- 글 삭제 -->
+	<delete id="deleteContent" parameterType="int">
+		delete from job_bd where num=#{num}
+	</delete>
+
+	<!-- 파일 삭제 -->
+	<delete id="deleteFile" parameterType="int">
+		delete from job_file where num=#{num}
+	</delete>
+	
+	<!-- 파일첨부 -->
+	<insert id="insertFile" parameterType="mi.job.board.model.DTO">
+		insert into job_file
+		values(job_file_seq.nextval, #{realname}, #{realpath}, #{realsize}, #{fakename})
+	</insert>  
+	
+	<!-- 다운로드할 파일의 이름 가져오기 -->
+	<select id="fileName" parameterType="int" resultType="String">
+		select realname from job_file where num=#{num}
+	</select>
+	
+	<!-- 다운로드할 파일의 경로이름 가져오기 -->
+	<select id="filefakeName" parameterType="int" resultType="String">
+		select fakename from job_file where num=#{num}
+	</select>
+	
+	<!-- 다운로드할 파일의 경로 가져오기 -->
+	<select id="downloadFilePath" parameterType="int" resultType="String">
+		select realpath from job_file where num=#{num}
+	</select>
+	
+	<!-- 제목으로 글 찾기 -->
+	<select id="searchTitle" parameterType="String" resultType="mi.job.board.model.DTO">
+		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
+		from (select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename 
+		from job_file natural join job_bd natural join person)
+		where title like '%'||#{searchContent}||'%'
+		order by rn desc
+	</select>
+	
+	<!--내용으로 글 찾기 -->
+	<select id="searchContent" parameterType="String" resultType="mi.job.board.model.DTO">
+		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
+		from (select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename 
+		from job_file natural join job_bd natural join person) 
+		where content like '%'||#{searchContent}||'%'
+		order by rn desc
+	</select>
+	
+	<!-- 작성자으로 글 찾기 -->
+	<select id="searchWriter" parameterType="String" resultType="mi.job.board.model.DTO">
+		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
+		from (select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename
+		from job_file natural join job_bd natural join person) 
+		where name like '%'||#{searchContent}||'%'
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="count" resultType="int">
+		select count(*) from job_bd
+	</select>
+
+</mapper>

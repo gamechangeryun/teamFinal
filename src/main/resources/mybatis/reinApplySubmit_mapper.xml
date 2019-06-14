@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReinApplySubmit">
+	
+	<!-- 휴학생 리스트에 해당 아이디가 있는지 확인 -->
+	<select id="checkLeaveStudent" parameterType="int" resultType="int">
+		select count(*) from leavestudent where id=#{id}
+	</select>
+	
+	<!-- 이미 복학신청한 아이디인지 확인 -->
+	<select id="checkReinApplyList" parameterType="int" resultType="int">
+		select count(*) from reinapplySubmit where id=#{id}
+	</select>
+	
+	<!-- 복학신청 -->
+	<insert id="insertReinApply" parameterType="map">
+		insert into reinapplysubmit
+		values(#{id}, #{startreindate}, sysdate)
+	</insert>
+	
+	<!-- ================================================ -->
+	<!-- 메인 글 -->
+	<!-- 휴학신청자 리스트 가져오기 -->
+	<select id="getReinApplyList" parameterType="map" resultType="js.reinapplysubmit.model.ReinApplySubmitDTO">
+		select id, name, temper_name, startreindate, receivedate, rn
+		from(select id, name, temper_name, startreindate, receivedate, rownum rn 
+			from reinapplysubmit natural join person natural join temper)
+		where rn between #{startRow} and #{endRow}
+		order by rn asc
+	</select>
+	
+	<!-- 학번으로 휴학신청 찾기 -->
+	<select id="searchId" parameterType="map" resultType="js.reinapplysubmit.model.ReinApplySubmitDTO">
+		select id, name, temper_name, startreindate, receivedate, rn
+		from (select id, name, temper_name, startreindate, receivedate, rownum rn 
+				from reinapplysubmit natural join person natural join temper
+				where id like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 학과으로 휴학신청 찾기 -->
+	<select id="searchTemperName" parameterType="map" resultType="js.reinapplysubmit.model.ReinApplySubmitDTO">
+		select id, name, temper_name, startreindate, receivedate, rn 
+		from (select id, name, temper_name, startreindate, receivedate, rownum rn 
+				from reinapplysubmit natural join person natural join temper
+				where temper_name like '%'||#{searchContent}||'%') 
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 작성자으로 휴학신청 찾기 -->
+	<select id="searchWriter" parameterType="map" resultType="js.reinapplysubmit.model.ReinApplySubmitDTO">
+		select id, name, temper_name, startreindate, receivedate, rn 
+		from (select id, name, temper_name, startreindate, receivedate, rownum rn 
+				from reinapplysubmit natural join person natural join temper
+				where name like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="countContent" resultType="int">
+		select count(*) from reinapplysubmit
+	</select>
+	
+	<!-- 학번으로 휴학신청 개수 -->
+	<select id="searchIdCount" parameterType="String" resultType="String">
+		select count(*)
+		from reinapplysubmit
+		where id like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!--학과로 휴학신청 개수 -->
+	<select id="searchTemperNameCount" parameterType="String" resultType="String">
+		select count(*)
+		from reinapplysubmit natural join person natural join temper
+		where temper_name like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자로 휴학신청 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from reinapplysubmit natural join person natural
+		where name like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- =================================================================== -->
+	<!-- 휴학생 테이블에서 삭제 -->
+	<delete id="reinSubmit" parameterType="int">
+		delete from leavestudent where id=#{id}
+	</delete>
+	
+	<!-- 복학신청 테이블에서 삭제 -->
+	<delete id="deleteReinList" parameterType="int">
+		delete from reinapplysubmit where id=#{id}
+	</delete>
+	
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="scoreinputMapper">
+	<!-- 학과리스트 가져오기 -->
+	<select id="allList" parameterType="int" resultType="sr.scoreinput.model.ScoreinputDTO">
+		select lecture_num, lecture_title from person natural join lecturelist where id=#{id}
+	</select>
+	
+	<!-- 강의를 선택하면 해당 강의를 듣는 학생을 불러오기 -->
+	<select id="sname" parameterType="String" resultType="sr.scoreinput.model.ScoreinputDTO">
+		select id, name, temper_name, lecture_num 
+		from listenlist natural join person natural join temper where lecture_num=#{lecture_num}
+	</select>
+	
+	<!--성적입력 한번에  -->
+	<insert id="inputscore" parameterType="sr.scoreinput.model.ScoreinputDtoList">
+		insert into scoreinputncheck
+		values(#{lecture_num}, #{id}, #{score})
+	</insert>
+		
+</mapper>

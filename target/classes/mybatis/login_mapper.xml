@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="login">
+	
+	<!-- 로그인 -->
+	<select id="loginData" parameterType="int" resultType="String">
+		select password from person where id=#{id}
+	</select>
+	
+	<!-- 현재 로그인된 아이디의 비밀번호 찾아오기 -->
+	<select id="dbPassword" parameterType="int" resultType="String">
+		select password from person where id=#{id}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePassword"  parameterType="map">
+		update person
+		set password=#{password}
+		where id=#{id}  
+	</update>
+	
+	<!-- 현재 로그인된 계정의 상세정보 가져오기 -->
+	<select id="getDetail" parameterType="int" resultType="js.login.model.PersonDTO">
+		select * from person where id=#{id}
+	</select>
+	
+	<!-- 계정정보변경 -->
+	<update id="changeDetail" parameterType="js.login.model.PersonDTO">
+		update person
+		set phone=#{phone}, email=#{email}, postcode=#{postcode}, address1=#{address1}, address2=#{address2}
+		where id=#{id}
+	</update>
+	
+	<!-- 아이디 찾아오기 -->
+	<select id="searchId" parameterType="map" resultType="String">
+		select id from person where name=#{name} and email=#{email}
+	</select>
+	
+	<!-- 비밀번호 찾아오기 -->
+	<select id="searchPw" parameterType="map" resultType="String">
+		select password from person where id=#{id} and email=#{email}
+	</select>
+ 	
+</mapper>

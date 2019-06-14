@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="anonSql">
+
+	<select id="showAll" resultType="wj.anonbd.model.AnonContentDto">
+		select *
+		from anon_bd
+		order by num desc
+	</select>
+	
+	<select id="showPage" parameterType="int" resultType="wj.anonbd.model.AnonContentDto">
+		select num, id, title, writer, content, writedate, readcount, isnotice
+		from(
+			select rownum rn, num, id, title, writer, content, writedate, readcount, isnotice
+			from
+		    	(select rownum, num, id, title, writer, content, writedate, readcount, isnotice
+		    	from anon_bd
+		    	order by num desc))
+		where rn between #{start} and #{start} + 4
+	</select>
+	
+	<select id="showContent" parameterType="int" resultType="wj.anonbd.model.AnonContentDto">
+		select *
+		from anon_bd
+		where num=#{num}
+	</select>
+	
+	<update id="modifyContent" parameterType="wj.anonbd.model.AnonContentDto">
+		update anon_bd
+		set title=#{title}, content=#{content}
+		where num=#{num}	
+	</update>
+	
+	<delete id="deleteContent" parameterType="wj.anonbd.model.AnonContentDto">
+		delete from anon_bd
+		where num=#{num}
+	</delete>
+	
+	<delete id="deleteComment" parameterType="int">
+		delete from anon_comment
+		where comment_num=#{comment_num}
+	</delete>
+	
+	
+	<update id="upReadcount" parameterType="wj.anonbd.model.AnonContentDto">
+		update anon_bd
+		set readcount = #{readcount}
+		where num=#{num}
+	</update>
+	
+	<insert id="addContent" parameterType="wj.anonbd.model.AnonContentDto">
+		insert into anon_bd (num, id, title, writer, content, writedate, readcount, isnotice)
+		values (anon_bd_sq.nextval, #{id}, #{title}, #{writer}, #{content}, sysdate, 0, 0)
+	</insert>
+	
+	<select id="searchForWriter" parameterType="String" resultType="wj.anonbd.model.AnonContentDto">
+		select *
+		from anon_bd
+		where writer like '%'||#{writer}||'%'
+		order by num desc
+	</select>
+	
+	<select id="searchPageForWriter" parameterType="map" resultType="wj.anonbd.model.AnonContentDto">
+		select num, id, title, writer, content, writedate, readcount, isnotice
+		from(
+			select rownum rn, num, id, title, writer, content, writedate, readcount, isnotice
+			from(
+				select num, id, title, writer, content, writedate, readcount, isnotice
+				from anon_bd
+				where writer like '%'||#{searchStr}||'%'
+				order by num desc))
+		where rn between #{start} and #{start}+4
+	</select>
+	
+	<select id="searchForTitle" parameterType="String" resultType="wj.anonbd.model.AnonContentDto">
+		select *
+		from anon_bd
+		where title like '%'||#{title}||'%'
+		order by num desc
+	</select>
+	
+	<select id="searchPageForTitle" parameterType="map" resultType="wj.anonbd.model.AnonContentDto">
+		select num, id, title, writer, content, writedate, readcount, isnotice
+		from(
+			select rownum rn, num, id, title, writer, content, writedate, readcount, isnotice
+			from(
+				select num, id, title, writer, content, writedate, readcount, isnotice
+				from anon_bd
+				where title like '%'||#{searchStr}||'%'
+				order by num desc))
+		where rn between #{start} and #{start}+4
+	</select>
+	
+	<select id="searchForContent" parameterType="String" resultType="wj.anonbd.model.AnonContentDto">
+		select *
+		from anon_bd
+		where content like '%'||#{content}||'%'
+		order by num desc
+	</select>
+	
+	<select id="searchPageForContent" parameterType="map" resultType="wj.anonbd.model.AnonContentDto">
+		select num, id, title, writer, content, writedate, readcount, isnotice
+		from(
+			select rownum rn, num, id, title, writer, content, writedate, readcount, isnotice
+			from(
+				select num, id, title, writer, content, writedate, readcount, isnotice
+				from anon_bd
+				where content like '%'||#{searchStr}||'%'
+				order by num desc))
+		where rn between #{start} and #{start}+4
+	</select>
+	
+	<select id="searchComment" parameterType="int" resultType="wj.anonbd.model.AnonCommentDto">
+		select *
+		from anon_comment
+		where num=#{num}
+		order by comment_num
+	</select>
+	
+	<insert id="insertComment" parameterType="wj.anonbd.model.AnonCommentDto">
+		insert into anon_comment
+		values (anon_comment_sq.nextval, #{num}, #{comment_writer}, sysdate, #{content})	
+	</insert>
+	
+	<insert id="insertContent" parameterType="wj.anonbd.model.AnonContentDto">
+		insert into anon_bd
+		values (anon_bd_sq.nextval, #{id}, #{title}, #{writer}, #{content}, sysdate, 0, 0)
+	</insert>
+
+
+</mapper>

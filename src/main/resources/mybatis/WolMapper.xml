@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="wol"> 
+	<select id ="List1"
+	resultType="KH.spring.jjin.DTO.WolDTO">
+	 select id, name, howmuch, commition from monthpay natural join person order by id 
+	</select>
+	
+	<select id="view" resultType="KH.spring.jjin.DTO.WolDTO">
+	select id, name, howmuch, commition from monthpay natural join person
+	where id=#{id} order by id 
+	</select>
+	
+	<update id="update" parameterType="KH.spring.jjin.DTO.WolDTO" >
+	update monthpay
+	set howmuch=#{howmuch},commition=#{commition},month=sysdate
+	where id=#{id}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

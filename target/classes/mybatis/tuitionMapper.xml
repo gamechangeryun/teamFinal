@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tuition">
+	
+	<select id="Count" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM tuitioncheck
+    </select>
+    
+    <!--조회버튼  -->
+    <select id="Input" parameterType="sr.tuition.model.JoinDTO" resultType="sr.tuition.model.TuitionDTO">
+        select k.id, k.howmuch, k.inputmoney, k.inputdate
+		from tuitioncheck k, person p, temper t
+		where k.id=p.id
+		and p.temper_num=t.temper_num
+		and t.temper_name=#{temper_name}
+		and k.inputmoney=#{inputmoney}
+    </select>
+    
+    <!--학과리스트  -->
+    <select id="temperList" resultType="sr.tuition.model.TemperDTO">
+    	select * from temper
+    </select>
+    
+	
+</mapper>

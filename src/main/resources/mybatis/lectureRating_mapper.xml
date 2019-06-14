@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LectureRating">
+	
+	<!-- 강의리스트 불러오기 -->
+	<select id="getLectureList" parameterType="int" resultType="js.lectureapply.model.LectureApplyDTO">
+		select le.lecture_num, le.lecture_title from listenlist li, lecturelist le 
+		where li.id=#{id} and li.LECTURE_NUM = le.LECTURE_NUM
+	</select>
+	
+	<!-- 학생이 교수 강의평가 하기 -->
+	<insert id="insertLectureRating" parameterType="map">
+		insert into lecturerating
+		values(#{lecture_num}, #{id}, #{totalcomment}, #{totalscore})
+	</insert>
+	
+	<!-- ================================================================================================ -->
+	<!-- 교수가 보는 화면 -->
+	<!-- 선택된 강의에 대한 강의평가에서 총점 가져오기 -->
+	<select id="getLectureRatingScore" parameterType="int" resultType="int">
+		select avg(totalscore) from lecturerating where lecture_num=#{lecture_num}
+	</select>
+	
+	<!-- 선택된 강의에 대한 강의평가에서 코멘트들 가져오기 -->
+	<select id="getLectureRatingComment" parameterType="int" resultType="js.lecturerating.model.LectureRatingDTO">
+		select totalcomment from lecturerating where lecture_num=#{lecture_num}
+	</select>
+
+
+</mapper>

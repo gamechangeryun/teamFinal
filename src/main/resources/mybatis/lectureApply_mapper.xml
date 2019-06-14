@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lectureapply">
+	
+	<!-- 강의개설신청서 작성 -->
+	<insert id="insertLectureApply" parameterType="js.lectureapply.model.LectureApplyDTO">
+		insert into lectureapply
+		values(#{id}, #{lecture_title}, #{lecture_grade}, #{roomcode}, #{timecode}, sysdate)
+	</insert>
+	
+	<!-- ===================================================================================== -->
+	<!-- 메인 글 -->
+	<!-- 글 목록 찾기 -->
+	<select id="getTotalList" resultType="js.lectureapply.model.LectureApplyDTO">
+		select id, name, temper_name, lecture_title, lecture_grade, roomcode, timecode, writedate, rn
+		from(select id, name, temper_name, lecture_title, lecture_grade, roomcode, timecode, writedate, rownum rn 
+			from lectureapply natural join person natural join temper)
+		where rn between #{startRow} and #{endRow}
+		order by rn asc
+	</select>
+	
+	<!-- 강의명으로 글 찾기 -->
+	<select id="searchTitle" parameterType="map" resultType="js.lectureapply.model.LectureApplyDTO">
+		select id, name, temper_name, lecture_title, lecture_grade, roomcode, timecode, writedate, rn
+		from(select id, name, temper_name, lecture_title, lecture_grade, roomcode, timecode, writedate, rownum rn 
+			from lectureapply natural join person natural join temper)
+		where lecture_title like '%'||#{searchContent}||'%' and rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 작성자으로 글 찾기 -->
+	<select id="searchWriter" parameterType="map" resultType="js.lectureapply.model.LectureApplyDTO">
+		select id, name, temper_name, lecture_title, lecture_grade, roomcode, timecode, writedate, rn
+		from(select id, name, temper_name, lecture_title, lecture_grade, roomcode, timecode, writedate, rownum rn 
+			from lectureapply natural join person natural join temper)
+		where name like '%'||#{searchContent}||'%' and rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="countContent" resultType="int">
+		select count(*) from lectureapply
+	</select>
+	
+	<!-- 제목으로 글 찾기 개수 -->
+	<select id="searchTitleCount" parameterType="String" resultType="String">
+		select count(*)
+		from lectureapply
+		where lecture_title like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자으로 글 찾기 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from lectureapply natural join person
+		where name like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- ======================================================================================= -->
+	<!-- 학과번호 가져오기 -->
+	<select id="getTemperNum" parameterType="int" resultType="String">
+		select temper_num from person natural join temper where id=#{id}
+	</select>
+	
+	<!-- 마지막 강의개설번호 가져오기 -->
+	<select id="getMaxNum" parameterType="String" resultType="String">
+		select substr(max(lecture_num),3) from lecturelist where substr(lecture_num, 0, 2)=#{temper_num}
+	</select>
+	
+	<!-- 강의개설리스트에 해당 정보 입력 -->
+	<insert id="insertLecture" parameterType="js.lectureapply.model.LectureApplyDTO">
+		insert into lecturelist
+		values(#{lecture_num}, #{id}, #{lecture_title}, #{lecture_grade}, #{timecode}, #{roomcode}, #{semester})
+	</insert>
+	<!-- ====================================================================================== -->
+	<delete id="deleteLectureApply" parameterType="map">
+		delete from lectureapply where id=#{id} and lecture_title=#{lecture_title}
+	</delete>
+	
+</mapper>

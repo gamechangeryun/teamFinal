@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LearnMapper">
+	<select id="allList" resultType="sr.learn.model.LearnDTO">
+		select * from learn_bd
+	</select>
+	
+	<delete id="delete" parameterType="sr.learn.model.LearnDTO">
+		delete from learn_bd where lecture_num=#{lecture_num} and week like '%'||#{week}||'%'
+	</delete>
+	
+	<select id="nowList" parameterType="sr.learn.model.LearnDTO" resultType="sr.learn.model.LearnDTO">
+		select * from learn_bd where lecture_num=#{lecture_num} and week like '%'||#{week}||'%'
+	</select>
+	
+	<update id="addNow" parameterType="sr.learn.model.LearnDTO">
+		update learn_bd set now_study=#{now_study} where lecture_num=#{lecture_num} and week like '%'||#{week}||'%'
+	</update>
+	
+	<update id="deleteNow" parameterType="sr.learn.model.LearnDTO">
+		update learn_bd set now_study=${now_study} where lecture_num=#{lecture_num} and week like '%'||#{week}||'%'
+	</update>
+	
+	<insert id="learnInsert" parameterType="sr.learn.model.LearnDTO">
+		insert into learn_bd values(#{lecture_num}, #{week}, #{subject_title}, #{max_study}, #{now_study})
+	</insert>
+</mapper>

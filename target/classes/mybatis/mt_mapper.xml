@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Mtmapper">
+	
+	<!-- 글 목록 찾기 -->
+	<!-- <select id="getList" parameterType="map" resultType="sr_model.bdDTO">
+		select * from mtmt_bd where num between #{startRow} and #{endRow} order by num desc
+	</select> -->
+	<select id="getList" resultType="sr_model.bdDTO">
+		select num, id, title, content, writedate, readcount, isnotice, position, maxpeople, nowpeople, rn from(select num, id, title, content, writedate, readcount, isnotice, position, maxpeople, nowpeople, rownum rn from mtmt_bd) where rn between #{startRow} and #{endRow} order by rn asc
+	</select>
+	
+	
+	<!-- 마지막 글 번호 찾기 -->
+	<select id="lastNum" resultType="String">
+		select max(num) from mtmt_bd
+	</select>
+	
+	<!-- 글 추가 -->
+	<insert id="insertContent" parameterType="sr_model.bdDTO">
+		insert into mtmt_bd(num, id, title, content, writedate, maxpeople, readcount, isnotice, position, nowpeople)
+		values(mtmt_bd_sq.nextval, #{id}, #{title}, #{content}, #{writedate}, #{maxpeople}, #{readcount}, #{isnotice}, #{position}, #{nowpeople})
+	</insert>
+	
+	<!-- 글 상세보기 -->
+	<select id="detailContent" parameterType="int" resultType="sr_model.bdDTO">
+		select * from mtmt_bd where num=#{num}
+	</select>
+	
+	<!-- 조회수 올리기 -->
+	<update id="addReadCount" parameterType="map">
+		update mtmt_bd
+		set readcount=#{readcount}
+		where num=#{num}
+	</update>
+
+	<!-- 비밀번호 가져오기 -->
+	<!-- <select id="passwordCheck" parameterType="int" resultType="String">
+		select password from board2 where num=#{num}
+	</select> -->
+	
+	<!-- 글 수정 -->
+	<update id="updateContent" parameterType="sr_model.bdDTO">
+		update mtmt_bd
+		set title=#{title}, content=#{content}, maxpeople=#{maxpeople}, writedate=#{writedate} where num=#{num}
+	</update>
+	
+	<!-- 글 삭제 -->
+	<delete id="deleteContent" parameterType="int">
+		delete from mtmt_bd where num=#{num}
+	</delete>
+	
+	<!-- 삭제된 글 다음 번호의 값 가져오기 -->
+	<select id="deleteNextNum" parameterType="int" resultType="sr_model.bdDTO">
+		select * from mtmt_bd where num=#{num}
+	</select>
+	
+	<!-- 삭제된 글에 다음글번호 업데이트하기 -->
+	<update id="deleteUpdate" parameterType="sr_model.bdDTO">
+		update mtmt_bd
+		set num=#{num}-1, id=#{id}, title=#{title}, content=#{content}, writedate=#{writedate}, readcount=#{readcount}
+		where num=#{num}
+	</update>
+	
+	<!-- 제목으로 글 찾기 -->
+	<!-- <select id="searchTitle" parameterType="String" resultType="sr_model.bdDTO">
+		select * from mtmt_bd where title like '%'||#{searchContent}||'%'
+	</select> -->
+	<select id="searchTitle" parameterType="map" resultType="sr_model.bdDTO">
+		select num, id, title, content, writedate, readcount, isnotice, position, maxpeople, nowpeople, rn
+		from (select num, id, title, content, writedate, readcount, isnotice, position, maxpeople, nowpeople, rownum rn 
+				from mtmt_bd
+				where title like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+		
+	<!--내용으로 글 찾기 -->
+	<!-- <select id="searchContent" parameterType="String" resultType="sr_model.bdDTO">
+		select * from mtmt_bd where content like '%'||#{searchContent}||'%'
+	</select> -->
+	<select id="searchContent" parameterType="map" resultType="sr_model.bdDTO">
+		select num, id, title, content, writedate, readcount, isnotice, position, maxpeople, nowpeople, rn
+		from (select num, id, title, content, writedate, readcount, isnotice, position, maxpeople, nowpeople, rownum rn 
+				from mtmt_bd
+				where content like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	
+	<!-- 작성자으로 글 찾기 -->
+	<!-- <select id="searchWriter" parameterType="String" resultType="sr_model.bdDTO">
+		select * from mtmt_bd where id like '%'||#{searchContent}||'%'
+	</select> -->
+	<select id="searchWriter" parameterType="map" resultType="sr_model.bdDTO">
+		select num, id, title, content, writedate, readcount, isnotice, position, maxpeople, nowpeople, rn
+		from (select num, id, title, content, writedate, readcount, isnotice, position maxpeople, nowpeople, rownum rn 
+				from mtmt_bd
+				where name like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="count" resultType="int">
+		select count(*) from mtmt_bd
+	</select>
+	
+	<!-- 제목으로 글 찾기 개수 -->
+	<select id="searchTitleCount" parameterType="String" resultType="String">
+		select count(*)
+		from mtmt_bd
+		where title like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!--내용으로 글 찾기 개수 -->
+	<select id="searchContentCount" parameterType="String" resultType="String">
+		select count(*)
+		from mtmt_bd 
+		where content like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자으로 글 찾기 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from mtmt_bd
+		where name like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!--=======================================================  -->
+	<!--멘토신청관련  -->
+	<!--신청자 목록 가져오기  -->
+	<select id="requestAll" parameterType="int" resultType="sr_model.requestDTO">
+		select * from mtmt_apply where num=#{num}
+	</select>
+	
+	<!--신청자 카운트  -->
+	<select id="requestCount" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM mtmt_apply
+	</select>
+    
+    <insert id="requestInsert" parameterType="sr_model.requestDTO">
+        INSERT INTO
+        mtmt_apply (NUM, ID)
+        VALUES(#{num},#{id}) 
+    </insert>
+    
+    <delete id="requestDelete" parameterType="int">
+        DELETE FROM mtmt_apply WHERE id = #{id}
+    </delete>
+    
+    <!--파일관련  -->
+	
+	<!-- 글 수정 파일 수정 -->
+	<insert id="changeUpdateFile" parameterType="sr_model.MtFileDTO">
+		update mtmt_file
+		set realname=#{realname}, realpath=#{realpath}, realsize=#{realsize}
+		where num=#{num}
+	</insert> 
+	
+	<!-- 파일 삭제 -->
+	<delete id="deleteFile" parameterType="int">
+		delete from mtmt_file where num=#{num}
+	</delete>
+	
+	<!-- 삭제된 글 다음 번호의 파일의값 가져오기 -->
+	<select id="deleteNextFileNum" parameterType="int" resultType="sr_model.MtFileDTO">
+		select * from mtmt_file where num=#{num}
+	</select>
+	
+	<update id="deleteFileUpdate" parameterType="sr_model.MtFileDTO">
+		update mtmt_file
+		set num=#{num}-1, realname=#{realname}, realpath=#{realpath}, realsize=#{realsize}
+		where num=#{num} 
+	</update>
+	
+	<!-- 파일첨부 -->
+	<insert id="insertFile" parameterType="sr_model.MtFileDTO">
+		insert into mtmt_file
+		values(mtmt_file_sq.nextval, #{realname}, #{realpath}, #{realsize})
+	</insert>  
+	
+	<!-- 다운로드할 파일의 이름 가져오기 -->
+	<select id="fileName" parameterType="int" resultType="String">
+		select realname from mtmt_file where num=#{num}
+	</select>
+	
+	<!-- 다운로드할 파일의 경로 가져오기 -->
+	<select id="downloadFilePath" parameterType="int" resultType="String">
+		select realpath from mtmt_file where num=#{num}
+	</select>
+	
+</mapper>

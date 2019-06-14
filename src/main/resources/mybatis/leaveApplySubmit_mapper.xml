@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="leaveApplySubmit">
+	
+	<!-- 휴학생테이블에서 해당 아이디가 있는지 확인 -->
+	<select id="checkLeaveStudent" parameterType="int" resultType="int">
+		select count(*) from leavestudent where id=#{id}
+	</select>
+	
+	<!-- 휴학신청 리스트에 해당 아이디가 있는지 확인 -->
+	<select id="checkLeaveApply" parameterType="int" resultType="int">
+		select count(*) from leaveapplysubmit where id=#{id}
+	</select>
+	
+	<!-- 휴학신청 -->
+	<insert id="insertLeaveApply"  parameterType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		insert into leaveapplysubmit
+		values(#{id}, #{startleavedate}, #{endleavedate}, #{reason}, sysdate)
+	</insert>
+	
+	<!-- ===================================================================================== -->
+	<!-- 메인 글 -->
+	<!-- 휴학신청자 리스트 가져오기 -->
+	<select id="getLeaveApplyList" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn
+		from(select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+			from leaveapplysubmit natural join person natural join temper)
+		where rn between #{startRow} and #{endRow}
+		order by rn asc
+	</select>
+	
+	<!-- 학번으로 휴학신청 찾기 -->
+	<select id="searchId" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn
+		from (select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+				from leaveapplysubmit natural join person natural join temper
+				where id like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 학과으로 휴학신청 찾기 -->
+	<select id="searchTemperName" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn 
+		from (select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+				from leaveapplysubmit natural join person natural join temper
+				where temper_name like '%'||#{searchContent}||'%') 
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 작성자으로 휴학신청 찾기 -->
+	<select id="searchWriter" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn 
+		from (select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+				from leaveapplysubmit natural join person natural join temper
+				where name like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="countContent" resultType="int">
+		select count(*) from leaveapplysubmit
+	</select>
+	
+	<!-- 학번으로 휴학신청 개수 -->
+	<select id="searchIdCount" parameterType="String" resultType="String">
+		select count(*)
+		from leaveapplysubmit
+		where id like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!--학과로 휴학신청 개수 -->
+	<select id="searchTemperNameCount" parameterType="String" resultType="String">
+		select count(*)
+		from leaveapplysubmit natural join person natural join temper
+		where temper_name like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자로 휴학신청 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from leaveapplysubmit natural join person natural
+		where name like '%'||#{searchContent}||'%'
+	</select>
+	<!-- =============================================================================== -->
+	<!-- 휴학생 테이블에 추가하기 -->
+	<insert id="insertLeaveStudent" parameterType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		insert into leavestudent
+		values(#{id}, #{startleavedate}, #{endleavedate}, #{reason}, #{receivedate})
+	</insert>
+	
+	<!-- 휴학신청 리스트에서 삭제하기 -->
+	<delete id="deleteLeaveApply" parameterType="int">
+		delete from leaveapplysubmit where id=#{id}
+	</delete>
+	<!-- ================================================================================ -->
+	<!-- 휴학생 리스트 가져오기 -->
+	<select id="getLeaveStudentList" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn
+		from(select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+			from leavestudent natural join person natural join temper)
+		where rn between #{startRow} and #{endRow}
+		order by rn asc
+	</select>
+	
+	<!-- 학번으로 휴학생 찾기 -->
+	<select id="searchLeaveStudentId" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn
+		from (select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+				from leavestudent natural join person natural join temper
+				where id like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 학과로 휴학생 찾기 -->
+	<select id="searchLeaveStudentTemperName" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn 
+		from (select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+				from leavestudent natural join person natural join temper
+				where temper_name like '%'||#{searchContent}||'%') 
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 작성자으로 휴학생 찾기 -->
+	<select id="searchLeaveStudentWriter" parameterType="map" resultType="js.leaveapplysubmit.model.LeaveApplySubmitDTO">
+		select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rn 
+		from (select id, name, temper_name, startleavedate, endleavedate, reason, receivedate, rownum rn 
+				from leavestudent natural join person natural join temper
+				where name like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 휴학생 인원수 가져오기 -->
+	<select id="countStudentLeavePeople" resultType="int">
+		select count(*) from leavestudent
+	</select>
+	
+	<!-- 휴학생 학번으로 휴학생 개수 -->
+	<select id="searchLeaveStudentIdCount" parameterType="String" resultType="String">
+		select count(*)
+		from leavestudent
+		where id like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 휴학생 휴학생 학과로 휴학생 개수 -->
+	<select id="searchLeaveStudentTemperNameCount" parameterType="String" resultType="String">
+		select count(*)
+		from leavestudent natural join person natural join temper
+		where temper_name like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자로 휴학신청 개수 -->
+	<select id="searchLeaveStudentWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from leavestudent natural join person natural
+		where name like '%'||#{searchContent}||'%'
+	</select>
+	
+	
+</mapper>

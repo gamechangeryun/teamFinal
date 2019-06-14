@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ex">
+	<!-- 리스트 관련 -->
+	<select id="selectAll" resultType="ss.qna.model.Qna_bd">
+		select num, id, name, title,
+		content, writedate, readcount,
+		isnotice, r
+		from (
+		select num, id,
+		name,
+		title, content,
+		writedate, readcount, isnotice,
+		rownum r
+		from
+		(
+		select num,
+		id, name, title, content, writedate,
+		readcount,
+		isnotice from qna_bd
+		natural join person
+		order by num desc
+		))
+		where
+		r between #{startRow} and
+		#{endRow}
+	</select>
+	<!-- 댓글 꺼내오기 -->
+	<select id="selectcm" resultType="ss.qna.model.Qna_comment" parameterType="int">
+		select comment_num, num, name, 
+		writedate, content, r
+		from (
+		select comment_num, num, name, 
+		writedate, content, rownum r
+		from
+		(
+		select comment_num, num, name, writedate, content
+		from qna_comment order by num desc
+		))
+		where r between #{startRow} and #{endRow} and num=#{num}
+	</select>
+	<!-- 제목으로 찾아오기 -->
+	<select resultType="ss.qna.model.Qna_bd" parameterType="String"
+		id="searchTitle">
+		select num, id, name, title, content, writedate, readcount,
+		isnotice, r
+		from (
+		select num, id, name, title, content,
+		writedate,
+		readcount, isnotice,
+		rownum r
+		from (
+		select num, id, name, title,
+		content, writedate,
+		readcount, isnotice from qna_bd natural join
+		person
+		order by num desc
+		))
+		where
+		title
+		like
+		'%'||#{searchContent}||'%'
+		order by r
+		DESC
+	</select>
+	<!-- 내용으로 찾아오기 -->
+	<select resultType="ss.qna.model.Qna_bd" parameterType="String"
+		id="searchContent">
+		select num, id, name, title, content, writedate, readcount,
+		isnotice, r
+		from (
+		select num, id, name, title, content,
+		writedate,
+		readcount,
+		isnotice,
+		rownum r
+		from (
+		select num, id, name, title, content,
+		writedate,
+		readcount, isnotice from qna_bd natural join person
+		order by num desc
+		))
+		where
+		content like
+		'%'||#{searchContent}||'%'
+		order by r DESC
+	</select>
+	<!-- 작성자로 찾아오기 -->
+	<select resultType="ss.qna.model.Qna_bd" parameterType="String"
+		id="searchWriter">
+		select num, id, name, title, content, writedate, readcount,
+		isnotice, r
+		from (
+		select num, id, name, title, content,
+		writedate,
+		readcount, isnotice,
+		rownum r
+		from (
+		select num, id, name, title,
+		content, writedate,
+		isnotice from qna_bd natural join person
+		order by num desc
+		))
+		where
+		name
+		like
+		'%'||#{searchContent}||'%'
+		order by r DESC
+	</select>	
+	<!-- 글 갯수 가져오기 -->
+	<select id="count" resultType="int">
+		select count(*) from qna_bd
+	</select>
+	<!-- 댓글 갯수 가져오기 -->
+	<select id="cmcount" resultType="int">
+		select count(*) from qna_comment
+	</select>
+	<!-- 세부글 관련 -->
+	<select id="detailBoard" parameterType="int"
+		resultType="ss.qna.model.Qna_bd">
+		select num, id, name, title, content, writedate, readcount,
+		isnotice
+		from(select num, id, name, title, content, writedate,
+		readcount, isnotice from qna_bd natural join person)
+		where
+		num=#{num}
+	</select>
+	<!-- 세부 댓글 가져오기 -->
+	<select id="cmdetailBoard" parameterType="int" resultType="ss.qna.model.Qna_comment">
+		select * from qna_comment where comment_num=#{comment_num}
+	</select>
+	<!-- 파일 실제이름 찾아오기 -->
+	<select id="fileName" parameterType="int" resultType="String">
+		select realname from qna_file where num=#{num}
+	</select>
+	<!-- 파일 실제 경로 가져오기 -->
+	<select id="downloadFilePath" parameterType="int"
+		resultType="String">
+		select realpath from qna_file where num=#{num}
+	</select>
+	<!-- 조회수 증가 -->
+	<update id="readcountup" parameterType="int">
+		update qna_bd set
+		readcount = readcount + 1 where num=#{num}
+	</update>
+	<!-- 게시글 추가 관련 -->
+	<insert id="insertBoard" parameterType="ss.qna.model.Qna_bd">
+		insert into qna_bd values
+		(qna_bd_sq.NEXTVAL,#{id},#{title},#{content},sysdate,#{readcount},#{isnotice})
+	</insert>
+	<!-- 게시글 파일 업로드 -->
+	<insert id="insertFile" parameterType="ss.qna.model.Qna_file">
+		insert into qna_file
+		values(qna_file_sq.NEXTVAL,#{realname},#{realpath},#{realsize})
+	</insert>
+	<!-- 글 수정 관련 -->
+	<update id="updateBoard" parameterType="ss.qna.model.Qna_bd">
+		update qna_bd set
+		id=#{id},title=#{title},content=#{content},
+		writedate=sysdate,isnotice=#{isnotice}
+		where num=#{num}
+	</update>
+	<!-- 수정 파일 업로드 -->
+	<update id="changefile" parameterType="ss.qna.model.Qna_file">
+		update qna_file set
+		realname=#{realname},realpath=#{realpath},realsize=#{realsize}
+		where num=#{num}
+	</update>
+	<!-- 글 삭제 관련 -->
+	<delete id="deleteBoard" parameterType="int">
+		delete from qna_bd where
+		num=#{num}
+	</delete>
+	<!-- 글 파일 삭제 -->
+	<delete id="deleteFile" parameterType="int">
+		delete from qna_file where num=#{num}
+	</delete>
+	<!-- 댓글 추가 -->
+	<insert id="insertcm" parameterType="ss.qna.model.Qna_comment">
+		insert into qna_comment
+		values(qna_comment_sq.NEXTVAL,#{num},#{name},sysdate,#{content})
+	</insert>
+	<!-- 댓글 파일 업로드 -->
+	<insert id="replyinsertFile"
+		parameterType="ss.qna.model.Comment_file">
+		insert into comment_file
+		values(comment_file_sq.NEXTVAL,#{realname},#{realpath},#{realsize})
+	</insert>
+	<!-- 댓글 수정 -->
+	<update id="updatecm" parameterType="ss.qna.model.Qna_comment">
+		update qna_comment set
+		num=#{num},name=#{name},writedate=sysdate,content=#{content}
+		where comment_num=#{comment_num}
+	</update>
+	<!-- 댓글 수정 업로드 -->
+	<update id="changecmfile" parameterType="ss.qna.model.Comment_file">
+		update comment_file set
+		realname=#{realname},realpath=#{realpath},realsize=#{realsize}
+		where comment_num=#{comment_num}
+	</update>
+	<!-- 댓글 삭제 -->
+	<delete id="deletecm" parameterType="int">
+		delete from qna_comment where
+		comment_num=#{comment_num}
+	</delete>
+	<!-- 댓글 파일 삭제 -->
+	<delete id="deletecmfile" parameterType="int">
+		delete from comment_file where comment_num=#{comment_num}
+	</delete>
+
+</mapper>
