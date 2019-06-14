@@ -37,4 +37,9 @@ public class ChangescoreinputDAO extends SqlSessionDaoSupport{
 	public void scoreUpdate(ScoreinputDTO dto)throws Exception{
 		getSqlSession().update("changescore.scoreUpdate", dto);
 	}
+	
+	// 신청자 정보 받아오기
+	public ChangescoreinputDTO personInfo(int id, int lecture_num) {
+		return null;
+	}
 }

@@ -13,4 +13,6 @@ public interface ChangescoreinputService {
 	public void changeDelete(ChangescoreinputDTO dto)throws Exception;
 	
 	public void scoreUpdate(ScoreinputDTO dto)throws Exception;
+	
+	public ChangescoreinputDTO personInfo(int id, int lecture_num);
 }

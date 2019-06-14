@@ -21,4 +21,6 @@
 	<update id="scoreUpdate" parameterType="sr.scoreinput.model.ScoreinputDtoList">
 		update scoreinputncheck c, person p set score=#{score} where p.id=#{id} and c.lecture_num=#{lecture_num}
 	</update>
+	
+	<!-- 신청자 정보 받아오기 -->
 </mapper>

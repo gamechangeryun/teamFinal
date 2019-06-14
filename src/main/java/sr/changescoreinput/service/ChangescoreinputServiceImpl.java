@@ -41,4 +41,11 @@ public class ChangescoreinputServiceImpl implements ChangescoreinputService {
 		cdao.scoreUpdate(dto);
 	}
 
+	@Override
+	public ChangescoreinputDTO personInfo(int id, int lecture_num) {
+		return cdao.personInfo(id, lecture_num);
+	}
+	
+	
+
 }

@@ -24,6 +24,7 @@
 			<th>강의명</th>
 			<th>학점</th>
 			<th>성적</th>
+			<th>성적정정신청</th>
 		</tr>
 		<c:if test="${dataList.size() == 0 }">
 			<td colspan="4">성적이 입력되지 않았습니다.</td>
@@ -37,6 +38,8 @@
 					<td>${item.lecture_title }</td>
 					<td>${item.lecture_grade }</td>
 					<td>${item.score }</td>
+					<td><input type="button" value="성적정정신청" 
+					onclick="location.href='/FinalProject/changescore/ChangescoreinputInsert.do?lecture_num=${item.lecture_num}'"></td>
 				</tr>
 			</c:forEach>
 			</tr>
@@ -49,7 +52,6 @@
 		
 		<tr>
 			<td>
-				<input type="button" value="성적정정신청" onclick="location.href='/FinalProject/changescore/ChangescoreinputInsert.do'">
 				<input type="button" value="메인으로" onclick="location.href='/FinalProject/${returnPage}'">
 			</td>
 		</tr>

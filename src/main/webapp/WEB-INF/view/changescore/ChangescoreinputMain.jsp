@@ -16,44 +16,6 @@
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script>
 $(document).ready(function(){
-	//콘솔에 폼데이터 확인용
-	/* $( "form" ).on( "submit", function( event ) {
-		  event.preventDefault();
-		  console.log( $( this ).serialize() );
-		}); */
-	 
-	//폼안의 값 컨트롤러로 전달
-	/* $("form").on("submit", function(){
-		$.ajax({
-			type:"POST",
-			url:"<c:url value='/changescore/ChangescoreinputInsertPro.do'/>",
-			dataType:"json",
-			data:$(this).serialize(),
-			success:function(args){
-			},
-			error:function(e){
-			}
-		});
-	}); */
-	
-	//학생사유입력폼이동 
-	$("#reasonInsert").on("click", function(){
-		location.href="<%=cp%>/changescore/ChangescoreinputInsert.do";
-	});
-	
-	//기각
-	<%-- function reject(lecture_num, studentnum){
-		alert("기각");
-		$.ajax({
-			url:"<%=cp%>/changescore/ChangescoreinputDelete.do",
-			type:"POST",
-			data:{'lecture_num':lecture_num,'studentnum':studentnum},
-			success:function(){
-				location.href="<%=cp%>/changescore/ChangescoreinputMain.do";
-			}
-		});
-		
-	} --%>
 	
 	//성적정정승인입력칸
 	$(".btn").on("click", function(){
@@ -70,24 +32,8 @@ $(document).ready(function(){
 		
 		$("#acceptins_"+id+"").html(html);
 	});
-	
 	 
 });
-
-//수정폼
-/* function accept(){
-	var studentnum = "";
-	
-	var html="";
-	console.log("수정폼")
-	html += "<div>";
-	html += "<input type='number' name='score_"+studentnum+"'>";
-	html += "<span><button onclick='acceptPro("+lecture_num+",\""+studentnum+"\");'>정정입력</button></span>";
-	html += "<div>";
-	
-	$("#acceptins_"+studentnum+"").html(html);
-} */
-
 
 //수정입력처리
 function acceptPro(lecture_num, id){
@@ -106,7 +52,6 @@ function acceptPro(lecture_num, id){
 </script>
 </head>
 <body>
-<button id="reasonInsert">학생성적정정신청</button>
 <form id="Listform">
 <table border="1">
 	<c:if test="${mainList.size() == 0}">

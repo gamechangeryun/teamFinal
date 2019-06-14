@@ -2,10 +2,13 @@ package sr.changescoreinput.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,8 +41,14 @@ public class ChangescoreinputController {
 	////// 학생이 정정 신청을 할 때
 	//학생사유 입력폼
 	@RequestMapping("/changescore/ChangescoreinputInsert.do")
-	public String changescoreinputInsert()throws Exception{
+	public String changescoreinputInsert(HttpSession session, @RequestParam("lecture_num")int lecture_num)throws Exception{
 		System.out.println("성적정정입력 진입확인");
+		System.out.println(lecture_num);
+		
+		int id = (int)session.getAttribute("nowId");
+		
+		ChangescoreinputDTO dto = service.personInfo(id, lecture_num);
+		
 		
 		return "changescore/ChangescoreinputInsert";
 	}
