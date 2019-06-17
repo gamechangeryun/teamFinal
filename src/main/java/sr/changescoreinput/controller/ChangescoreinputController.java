@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,24 +42,29 @@ public class ChangescoreinputController {
 	////// 학생이 정정 신청을 할 때
 	//학생사유 입력폼
 	@RequestMapping("/changescore/ChangescoreinputInsert.do")
-	public String changescoreinputInsert(HttpSession session, @RequestParam("lecture_num")int lecture_num)throws Exception{
+	public String changescoreinputInsert(HttpSession session, Model model, @RequestParam("lecture_num")int lecture_num)throws Exception{
 		System.out.println("성적정정입력 진입확인");
 		System.out.println(lecture_num);
 		
 		int id = (int)session.getAttribute("nowId");
+		String returnPage = (String)session.getAttribute("mainPage");
 		
 		ChangescoreinputDTO dto = service.personInfo(id, lecture_num);
-		
+		int confirm = service.checkChangeScore(id, lecture_num);
+		System.out.println("confirm :: " + confirm);
+		model.addAttribute("dto", dto);
+		model.addAttribute("returnPage", returnPage);
+		model.addAttribute("confirm", confirm);
 		
 		return "changescore/ChangescoreinputInsert";
 	}
 	
 	//학생사유 DB입력
-	@RequestMapping("/changescore/ChangescoreinputInsertPro.do")
+	@RequestMapping("/ChangescoreinputInsertPro.do")
 	public String changescoreinputInsertPro(ChangescoreinputDTO dto)throws Exception{
 		System.out.println("성적디비 입력");
 		service.reasonInsert(dto);
-		return "redirect:ChangescoreinputMain.do";
+		return "redirect:semesterScore.do";
 	}
 	
 	//기각

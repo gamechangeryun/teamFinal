@@ -43,7 +43,7 @@
 			<tr>
 				<td><h5>글내용</h5></td>
 				<td colspan="5">${detailContent.content}
-				<img src="jobBoard/${fn}" width="200" height="300"/>
+				<img src="${fn}" width="200" height="300"/>
 				</td>
 
 			</tr>

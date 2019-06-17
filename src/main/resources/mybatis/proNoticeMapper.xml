@@ -8,7 +8,7 @@
 	<select id="getTotalList" resultType="sr.pro.notice.model.PronoticeDTO">
 		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
 		from(select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn from pro_notice_bd)
-		where rn between #{startRow} and #{endRow}
+		where lecture_num = #{lecture_num} and rn between #{startRow} and #{endRow}
 		order by rn asc
 	</select>
 	
@@ -17,7 +17,7 @@
 		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
 		from (select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn 
 				from pro_notice_bd
-				where title like '%'||#{searchContent}||'%')
+				where lecture_num = #{lecture_num} and title like '%'||#{searchContent}||'%')
 		where rn between #{startRow} and #{endRow}
 		order by rn desc
 	</select>
@@ -27,7 +27,7 @@
 		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
 		from (select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn 
 				from pro_notice_bd
-				where content like '%'||#{searchContent}||'%') 
+				where lecture_num = #{lecture_num} and content like '%'||#{searchContent}||'%') 
 		where rn between #{startRow} and #{endRow}
 		order by rn desc
 	</select>
@@ -37,7 +37,7 @@
 		select num, lecture_num, title, content, writedate, readcount, isnotice, rn
 		from (select num, lecture_num, title, content, writedate, readcount, isnotice, rownum rn 
 				from pro_notice_bd
-				where lecture_num like '%'||#{searchContent}||'%')
+				where lecture_num = #{lecture_num} and lecture_num like '%'||#{searchContent}||'%')
 		where rn between #{startRow} and #{endRow}
 		order by rn desc
 	</select>

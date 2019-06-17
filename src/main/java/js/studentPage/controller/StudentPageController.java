@@ -14,6 +14,7 @@ import js.noticeboard.model.NoticeBoardDTO;
 import js.scholarship.model.ScholarshipDTO;
 import js.studentPage.model.PrivacyDTO;
 import js.studentPage.service.StudentService;
+import mi.job.board.model.DTO;
 
 @Controller
 public class StudentPageController {
@@ -29,9 +30,12 @@ public class StudentPageController {
 	public ModelAndView studentPageForm(@ModelAttribute("getPicture") String picture,
 										@ModelAttribute("getPrivacy") PrivacyDTO privacyDto,
 										@ModelAttribute("getNoticeBoard") List<NoticeBoardDTO> noticeBoard,
-										@ModelAttribute("getScholarship") List<ScholarshipDTO> scholarshipDto) {
+										@ModelAttribute("getJobBoard") List<DTO> jobBoard,
+										@ModelAttribute("getScholarship") List<ScholarshipDTO> scholarshipDto,
+										HttpSession session) {
 		
 		int position = 0;
+		String returnPage = (String)session.getAttribute("mainPage");
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("studentPage");
@@ -39,7 +43,9 @@ public class StudentPageController {
 		mav.addObject("privacy", privacyDto);
 		mav.addObject("scholarship", scholarshipDto);
 		mav.addObject("noticeBoard", noticeBoard);
+		mav.addObject("jobBoard", jobBoard);
 		mav.addObject("position", position);
+		mav.addObject("returnPage", returnPage);
 		
 		return mav;
 	}
@@ -83,6 +89,15 @@ public class StudentPageController {
 		
 		List<NoticeBoardDTO> list = service.getNoticeBoard();
 		
+		return list;
+	}
+	
+	// 공지사항 게시판 리스트 가져오기
+	@ModelAttribute("getJobBoard")
+	public List<DTO> jobBoard() {
+
+		List<DTO> list = service.getJobBoard();  
+
 		return list;
 	}
 	

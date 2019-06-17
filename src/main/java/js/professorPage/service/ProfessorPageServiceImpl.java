@@ -9,6 +9,7 @@ import KH.spring.jjin.DTO.WolDTO;
 import js.noticeboard.model.NoticeBoardDTO;
 import js.professorPage.model.ProfessorPageDAO;
 import js.studentPage.model.PrivacyDTO;
+import mi.job.board.model.DTO;
 
 @Service
 public class ProfessorPageServiceImpl implements ProfessorPageService{
@@ -53,6 +54,15 @@ public class ProfessorPageServiceImpl implements ProfessorPageService{
 		
 		List<WolDTO> list = dao.getMonthPay(id);
 		
+		return list;
+	}
+	
+	// 취업게시판 가져오기
+	@Override
+	public List<DTO> getJobBoard() {
+
+		List<DTO> list = dao.getJobBoard();
+
 		return list;
 	}
 	

@@ -7,10 +7,12 @@ public class AnonContentDto {
 	int id;
 	String title;
 	String writer;
+	String name;
 	String content;
 	Date writedate;
 	int readcount;
 	String isNotice;
+	
 	public int getNum() {
 		return num;
 	}
@@ -22,6 +24,12 @@ public class AnonContentDto {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getTitle() {
 		return title;

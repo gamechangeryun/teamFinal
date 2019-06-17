@@ -100,7 +100,7 @@ public class LectureApplyController {
 	@RequestMapping("/lectureapplySubmit.do")
 	public String lectureApplySubmit(LectureApplyDTO dto, HttpServletResponse response) {
 		
-		int lecture_num = service.getLecture_num(dto.getId());	// 학과번호 가져오기
+		int lecture_num = service.getLecture_num();	// 강의번호 만들기
 		
 		dto.setLecture_num(lecture_num);
 		

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,13 +48,13 @@
 			</tr>
 			
 			<tr>
-				<td>파일</td>   
+				<td>파일</td>
 				<td colspan="2"><input type="file" name="file" value="${path}"></td>
 			</tr>
 			   
 			<tr>   
-				<td colspan="7"><input type="button" value="목록으로" onclick="location.href='/FinalProject/job_bd/board.do'">
-					<input type="reset" value="다시작성">
+				<td colspan="7">
+					<input type="button" value="목록으로" onclick="location.href='/FinalProject/job_bd/board.do'">
 					<input type="submit" value="수정">
 				</td>
 			</tr>

@@ -7,6 +7,7 @@ public class bdDTO {
 	private int rn;
 	private int num;
 	private int id;
+	private String name;
 	private String title;
 	private String content;
 	private Date writedate;
@@ -34,6 +35,12 @@ public class bdDTO {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getTitle() {
 		return title;

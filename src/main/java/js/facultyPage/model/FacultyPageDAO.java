@@ -7,6 +7,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import KH.spring.jjin.DTO.WolDTO;
 import js.noticeboard.model.NoticeBoardDTO;
 import js.studentPage.model.PrivacyDTO;
+import mi.job.board.model.DTO;
 
 public class FacultyPageDAO extends SqlSessionDaoSupport{
 
@@ -34,5 +35,12 @@ public class FacultyPageDAO extends SqlSessionDaoSupport{
 		return list;
 	}
 	
+	// 취업게시판 가져오기
+	public List<DTO> getJobBoard() {
+
+		List<DTO> list = getSqlSession().selectList("ProfessorPage.getJobBoard");
+
+		return list;
+	}
 	
 }

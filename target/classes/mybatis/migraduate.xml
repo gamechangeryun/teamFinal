@@ -13,11 +13,12 @@
 	</select>
 	
 	<!-- 인원 찾기 -->
-	<select id="searchName" parameterType="String" resultType="mi.gra.board.model.graDTO">
+	<select id="searchName" parameterType="map" resultType="mi.gra.board.model.graDTO">
 		select id, name, rn, temper_num, temper_name, totalaverage
 		from (select id, name, rownum rn, temper_num, temper_name, totalaverage
-		from totalscore natural join temper natural join person) 
-		where temper_num like '%'||#{searchContent}||'%'
+		from totalscore natural join temper natural join person
+		where temper_num like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
 		order by rn desc
 	</select>
 	
@@ -25,5 +26,14 @@
 	<select id="count" resultType="int">
 		select count(*) from job_bd
 	</select>
+	
+	<!-- 제목으로 글 찾기 개수 -->
+	<select id="searchNameCount" parameterType="String" resultType="String">
+		select count(*)
+		from temper natural join job_bd
+		where temper_num like '%'||#{searchContent}||'%'
+	</select>
+	
+	
 	
 </mapper>

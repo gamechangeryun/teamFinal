@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="proInfo">
+	<select id="professorInfo" parameterType="int" resultType="sr.pro.model.ProDTO">
+		select name, temper_name, email, roomcode
+		from lectureschedule natural join lecturelist natural join person natural join temper
+		where lecture_num=#{lecture_num}
+	</select>
+	
+	<select id="picture" parameterType="int" resultType="String">
+		select realpath
+		from picture
+		where id=#{id}
+	</select>
+</mapper>

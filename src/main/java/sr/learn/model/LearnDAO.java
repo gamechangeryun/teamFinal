@@ -17,9 +17,9 @@ public class LearnDAO extends SqlSessionDaoSupport{
 	}
 	
 	//시작 목록
-	public List<LearnDTO> allList()throws Exception{
+	public List<LearnDTO> allList(int lecture_num)throws Exception{
 		
-		return getSqlSession().selectList("LearnMapper.allList");
+		return getSqlSession().selectList("LearnMapper.allList", lecture_num);
 	}
 	
 	//종료버튼

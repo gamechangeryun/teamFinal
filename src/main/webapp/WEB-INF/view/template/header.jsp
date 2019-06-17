@@ -3,7 +3,4 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ page isELIgnored="false" %>
 
-<%-- <tiles:importAttribute name="menuList" /> --%>
-
-<%-- <c:forEach var="menu" items="${menuList}">${menu} </c:forEach> --%>
-| 환영합니다!
+<img src="header/image.png" width="1500" height="200" onclick="location.href='/FinalProject/${returnPage}'">  

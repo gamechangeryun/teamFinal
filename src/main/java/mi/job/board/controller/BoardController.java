@@ -2,6 +2,7 @@ package mi.job.board.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,8 +25,6 @@ import mi.job.board.service.Service;
 @Controller
 public class BoardController {
 	
-
-	
 	@Autowired
 	Service service;
  
@@ -37,22 +36,39 @@ public class BoardController {
 	@RequestMapping("/job_bd/board.do")
 	public ModelAndView mainPage(@RequestParam(value="options", defaultValue="0") int options, 
 								@RequestParam(value="searchContent", defaultValue=" ") String searchContent,
-								@RequestParam(value="pageNum", defaultValue="1" ) String pageNum) {
+								@RequestParam(value="pageNum", defaultValue="1" ) String pageNum,
+								HttpSession session) {
 		
 		int pageSize = 5;		// 한페이지당 보여줄 글의 수
 		int currentPage = Integer.parseInt(pageNum);	// 현재 페이지 
 		int startRow = (currentPage - 1) * pageSize + 1;	// 시작번호
 		int endRow = currentPage * pageSize;	// 끝 번호
-		int count = service.count();	// 전체 글의 개수
+		
+		int nowId = (int)session.getAttribute("nowId");
+		String returnPage = (String)session.getAttribute("mainPage");
+		int count = 0;	// 전체 글의 개수
 		// int number = count-(currentPage - 1) * 10;	// 글 목록에 표시할 글 번호
 		
-		List<DTO> mainList = service.getList(startRow, endRow);	// 리스트 전부 가져오기
-		List<DTO> searchList = service.getSearchList(options, searchContent);	// 서치값 가져오기
+		List<DTO> mainList = new ArrayList<DTO>();	// 리스트 전부 가져오기
+		List<DTO> searchList = new ArrayList<DTO>();	// 서치값 가져오기
 
+		if(searchContent.equals(" ")) {
+			mainList = service.getList(startRow, endRow);
+			count = service.count();
+		}
+		else {
+			searchList = service.getSearchList(options, searchContent, startRow, endRow);
+			count = service.searchCount(options, searchContent);
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("job_bd/mainPage");
 		mav.addObject("mainList", mainList);
 		mav.addObject("searchList", searchList);
+		mav.addObject("nowId", nowId);
+		mav.addObject("returnPage", returnPage);
+		mav.addObject("options", options);
+		mav.addObject("searchContent", searchContent);
 		
 		mav.addObject("pageSize", pageSize);
 		mav.addObject("count", count);//
@@ -78,6 +94,8 @@ public class BoardController {
 		
 		service.insertContent(dto);
 		printInfo(file, dto.getNum());	// 파일 업로드 메서드 호출
+		
+		
 		
 		return "redirect:board.do";
 	}
@@ -111,9 +129,10 @@ public class BoardController {
 		// 현재시간 구하기
 		Date time = new Date();
 		
-		File new_f = new File("D:\\01_java\\newspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp4\\wtpwebapps\\SpringProject\\job_bd\\resource\\" + time.getTime() + report.getOriginalFilename());
+		File new_f = new File("C:\\Users\\jinse\\Desktop\\진성\\프로그래밍 언어\\HTML - 이젠컴퓨터아카데미\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\FinalProject\\job_bd\\" + time.getTime() + report.getOriginalFilename());
 										// time.getTime()은 밀리세컨드로 시간을 받는다 inTime으로 해도 된다.
-		String fn = time.getTime()+ report.getOriginalFilename();
+			
+			
 		try {
 
 			// 실제 경로에 저장을 하는 MultipartFile메서드
@@ -121,6 +140,8 @@ public class BoardController {
 		}catch (IllegalStateException e) {
 		}catch (IOException e1) {}
 		
+		if(new_f != null) {
+			String fn = time.getTime()+ report.getOriginalFilename();
 		// DTO에 저장
 		DTO dto = new DTO();
 		dto.setNum(num);
@@ -128,8 +149,9 @@ public class BoardController {
 		dto.setRealpath(new_f.getPath());
 		dto.setRealsize(report.getSize());
 		dto.setFakename(fn);
-		
+			
 		service.Fileupload(dto);
+			}
 	}
 	
 	// 파일다운로드
@@ -154,7 +176,6 @@ public class BoardController {
 	
 	// 파일이 저장되는 경로
 	private File getFile(String rnpath) {
-		
 		
 		System.out.println("rnpath :: " + rnpath);
 		
@@ -194,7 +215,7 @@ public class BoardController {
 		// 현재시간 구하기
 		Date time = new Date();
 		
-		File new_f = new File("D:\\01_java\\newspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp4\\wtpwebapps\\SpringProject\\job_bd\\resource\\" +time.getTime()+ report.getOriginalFilename());
+		File new_f = new File("C:\\Users\\jinse\\Desktop\\진성\\프로그래밍 언어\\HTML - 이젠컴퓨터아카데미\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\FinalProject\\job_bd\\" +time.getTime()+ report.getOriginalFilename());
 										// time.getTime()은 밀리세컨드로 시간을 받는다 inTime으로 해도 된다.
 		
 		String fn = time.getTime()+ report.getOriginalFilename();

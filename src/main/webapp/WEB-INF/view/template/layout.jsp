@@ -20,8 +20,7 @@
 	<tiles:insertAttribute name="body" />
 </article>
 </section>
-	
-	
+
 	
 	<hr />
 <footer>

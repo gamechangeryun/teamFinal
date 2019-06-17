@@ -37,7 +37,7 @@ $("input:submit[name=closeSubmit]").click(function(){
 $(document).ready(function(){
 	
 	$(".add").on("click",function(){
-		var lecture_num=$(this).attr('name');
+		var lecture_num=$("#rePage").val();
 		var week=$(this).attr('id');
 		var now_study=$("#now_"+week+"").val();
 		
@@ -45,8 +45,8 @@ $(document).ready(function(){
 	});
 	
 	$(".dis").on("click",function(){
-		var lecture_num=$(this).attr('name'); 
-		var week=$("#now_"+lecture_num+"").val();
+		var lecture_num=$("#rePage").val();
+		var week=$(this).attr('name');
 		var now_study=$("#now_"+week+"").val();
 		
 		disNow(lecture_num,week,now_study);
@@ -54,17 +54,20 @@ $(document).ready(function(){
 	
 });	//레디펑션end
 
+function rePage(){
+	var rePage = $("#rePage").val();
+	location.href="/FinalProject/learn/LearnMain.do?lecture_num="+rePage; 
+};
 
 //단계증가
 function addNow(lecture_num,week,now_study){
    
-		
 	$.ajax({
         type:'POST',
         url : "<c:url value='/learn/addNow.do'/>",
         data:{'lecture_num' : lecture_num, 'week' : week, 'now_study' : now_study},
         success : function(){
-        	location.href="/FinalProject/learn/LearnMain.do";
+        	rePage();
         },
         error:function(request,status,error){
        }
@@ -79,7 +82,7 @@ function disNow(lecture_num,week,now_study){
 		url : "<c:url value='/learn/deleteNow.do'/>",
 		data : {'lecture_num' : lecture_num, 'week' : week, 'now_study' : now_study},
 		success : function(){
-			location.href="/FinalProject/learn/LearnMain.do";
+			rePage();
 		}
 	});
 }
@@ -115,25 +118,6 @@ function checkIt(){
 	
 	return true;
 }
-
-//학습목차 삽입폼 생성
-/* $("#insertbtn").on("click",function(){
-	
-	var str = '';
-
-	str += '<div>';
-	str += '<span>강의번호 :<input type="number" name="lecture_num"/></span>';
-	str += '<span>주 차 :<input type="text" name="week"></span>';
-	str += '<span>학습제목 :<input type="text" name="subject_title"></span>';
-	str += '<span>최대학습량<input type="number" name="max_study"></span>';
-	str += '<span>현재학습량<input type="number" name="now_study"></span>';
-	str += '<input type="submit" id="inputinsert" value="등록">';
-	str += '</div>';
-	
-	$("#insert").html(str);
-}); */
-
-
 //현재페이지불러오기
 function getList(){
 	$.ajax({
@@ -146,20 +130,14 @@ function getList(){
         }
 	});
 }
-
 </script>
 
 </head>
   <body>
     <div class="container">
-    <input type="button" id="insertbtn" value="목차입력" onclick="location.href='/FinalProject/learn/LearnInsertForm.do'">
+    <input type="button" id="insertbtn" value="목차입력" onclick="location.href='/FinalProject/learn/LearnInsertForm.do?lecture_num=${lecture_num}'">
       <div class="row">
-    	<!--목차 입력칸 생성 및 바로 입력  -->
-    	<!-- <form name="insertForm" id="insertForm" action="/FinalProject/learn/LearnInsert.do" method="post" onsubmit="return checkIt()">
-    	<span id="insert"></span>
-    	</form> -->
-    	<!--목차 입력 끝  -->
-    	
+    	<input type="hidden" id="rePage" value="${lecture_num }">
     	<!--DB에 내용 없으면  -->    
 		<c:if test="${mainList.size() == 0 }">
 			<p> 내용이 없습니다. </p>
@@ -184,10 +162,9 @@ function getList(){
 		              	진행단계 : 
 		              	<progress max="${item.max_study }"  value="${item.now_study }"></progress>
 		              	${item.now_study }/${item.max_study }
-		              	<input type="button" class="add" id="${item.week }" name="${item.lecture_num}" value="증가">
+		              	<input type="button" class="add" id="${item.week }" value="증가">
 		              	<input type="hidden" id="now_${item.week }" value="${item.now_study}">
-		              	<input type="hidden" id="now_${item.lecture_num }" value="${item.week }">
-		              	<input type="button" class="dis" name="${item.lecture_num }" value="감소">
+		              	<input type="button" class="dis" name="${item.week }" value="감소">
 		              	</span>
 		              	</form>
 		              </div>

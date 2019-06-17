@@ -59,7 +59,7 @@
 		</script>
 	</c:if>
 	
-	<form action="/FinalProject/login.do" method="post" name="myForm" onsubmit="return checkIt()">
+	<form action="/FinalProject/login.do" name="myForm" onsubmit="return checkIt()">
 		<table border="1">
 			<tr>
 				<td>
@@ -69,7 +69,8 @@
 					<input type="password" name="password">
 				</td>
 				<td>
-					<input type="submit" value="로그인">
+					<input type="submit" value="회원 로그인"><br />
+					<input type="button" value="게스트로그인" onclick="location.href='/FinalProject/login.do?id=201900301&password=1111'">
 				</td>
 			</tr>
 			

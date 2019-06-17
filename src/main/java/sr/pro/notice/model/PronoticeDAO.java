@@ -11,10 +11,11 @@ import org.springframework.stereotype.Component;
 public class PronoticeDAO extends SqlSessionDaoSupport {
 
 	// 글목록
-	public List<PronoticeDTO> getList(int startRow, int endRow) throws Exception {
+	public List<PronoticeDTO> getList(int startRow, int endRow, int lecture_num) throws Exception {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("startRow", startRow);
 		map.put("endRow", endRow);
+		map.put("lecture_num", lecture_num);
 
 		List<PronoticeDTO> list = getSqlSession().selectList("ProNoticeBoardMapper.getTotalList", map);
 
@@ -22,7 +23,7 @@ public class PronoticeDAO extends SqlSessionDaoSupport {
 	}
 
 	// 검색 글 목록
-	public List<PronoticeDTO> getSearchList(int options, String searchContent, int startRow, int endRow)
+	public List<PronoticeDTO> getSearchList(int options, String searchContent, int startRow, int endRow, int lecture_num)
 			throws Exception {
 		List<PronoticeDTO> list = null;
 
@@ -30,6 +31,7 @@ public class PronoticeDAO extends SqlSessionDaoSupport {
 		map.put("searchContent", searchContent);
 		map.put("startRow", startRow);
 		map.put("endRow", endRow);
+		map.put("lecture_num", lecture_num);
 
 		if (options == 0) {
 			if (!searchContent.equals(" ")) {

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="guestPage">
+
+	<!-- 공지사항 가져오기 -->
+	<select id="getNoticeBoard" resultType="js.noticeboard.model.NoticeBoardDTO">
+		<!-- 부등호 연산을 위해서 CDATA가 필요하다. -->
+		<![CDATA[ 
+			select num, title, name, writedate, readcount, isnotice, rn
+			from (select num, title, name, writedate, readcount, isnotice, rownum rn from notice_bd natural join person order by readcount desc)
+			where rn <= 5
+		 ]]>
+	</select>
+	
+	<!-- 취업게시판 가져오기 -->
+	<select id="getJobBoard" resultType="mi.job.board.model.DTO">
+		<!-- 부등호 연산을 위해서 CDATA가 필요하다. -->
+		<![CDATA[ 
+			select num, title, name, writedate, readcount, isnotice, rn
+			from (select num, title, name, writedate, readcount, isnotice, rownum rn from job_bd natural join person order by readcount desc)
+			where rn <= 5
+		 ]]>
+	</select>
+	
+	<!-- 멘토멘티게시판 가져오기 -->
+	<select id="getMtmtBoard" resultType="sr_model.bdDTO">
+		<!-- 부등호 연산을 위해서 CDATA가 필요하다. -->
+		<![CDATA[ 
+			select num, title, name, writedate, readcount, position, isnotice, rn
+			from (select num, title, name, writedate, readcount, position, isnotice, rownum rn from mtmt_bd natural join person order by readcount desc)
+			where rn <= 5
+		 ]]>
+	</select>
+	
+	<!-- 자유게시판 가져오기 -->
+	<select id="getFreeBoard" resultType="KH.spring.jjin.DTO.BoardDTO">
+		<!-- 부등호 연산을 위해서 CDATA가 필요하다. -->
+		<![CDATA[ 
+			select bno, title, name, writedate, viewcnt, rn
+			from (select bno, title, name, writedate, viewcnt, rownum rn from free_bd natural join person order by viewcnt desc)
+			where rn <= 5
+		 ]]>
+	</select>
+	
+	<!-- 대나무숲게시판 가져오기 -->
+	<select id="getAnonBoard" resultType="wj.anonbd.model.AnonContentDto">
+		<!-- 부등호 연산을 위해서 CDATA가 필요하다. -->
+		<![CDATA[ 
+			select num, title, name, writedate, readcount, isnotice, rn
+			from (select num, title, name, writedate, readcount, isnotice, rownum rn from anon_bd natural join person order by readcount desc)
+			where rn <= 5
+		 ]]>
+	</select>
+	
+	
+	
+	
+
+</mapper>

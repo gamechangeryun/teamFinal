@@ -30,7 +30,8 @@ public class PronoticeController {
 	@RequestMapping("/PronoticeboardMain.do")
 	public ModelAndView mainPage(@RequestParam(value = "options", defaultValue = "0") int options,
 			@RequestParam(value = "searchContent", defaultValue = " ") String searchContent,
-			@RequestParam(value = "pageNum", defaultValue = "1") String pageNum, HttpSession session) {
+			@RequestParam(value = "pageNum", defaultValue = "1") String pageNum, 
+			@RequestParam("lecture_num") int lecture_num, HttpSession session) {
 
 		System.out.println("공지사항 글보기 진입 체크");
 
@@ -47,10 +48,10 @@ public class PronoticeController {
 		List<PronoticeDTO> searchList = new ArrayList<PronoticeDTO>();
 
 		if (searchContent.equals(" ")) {
-			mainList = service.getList(startRow, endRow); // 페이지에 맞는 리스트 가져오기
+			mainList = service.getList(startRow, endRow, lecture_num); // 페이지에 맞는 리스트 가져오기
 			count = service.count(); // 전체 글의 개수
 		} else {
-			searchList = service.getSearchList(options, searchContent, startRow, endRow); // 서치값 가져오기
+			searchList = service.getSearchList(options, searchContent, startRow, endRow, lecture_num); // 서치값 가져오기
 			count = service.searchCount(options, searchContent); // 서치된 글의 개수
 		}
 

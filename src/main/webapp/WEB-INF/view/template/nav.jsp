@@ -11,6 +11,7 @@
 					<select name="classRelated"
 						onchange="window.open(value,'_self');">
 							<option value="#">수업관련</option>
+							<option value="/FinalProject/hw_bd/board.do">과제제출나중에뺴기</option>
 							<option value="1">수강신청</option>
 							<option value="2">수강포기</option>
 							<option value="3">수강조회</option>
@@ -50,7 +51,8 @@
 					<select name="studentMana" onchange="window.open(value,'_self');">
 						<option value="#">수업관련</option>
 						<option value="/FinalProject/lectureapply.do">강의개설신청</option>
-						<option value="2">강의게시판</option>
+						<option value="/FinalProject/lectureList.do">강의리스트</option>
+						<option value="/FinalProject/atten/attenMain.do">출석입력</option>
 						<option value="/FinalProject/canceledlectureForm.do">휴강신청</option>
 						<option value="/FinalProject/submitCanceledList.do">휴강일확인 및 보강일 확인</option>
 					</select>
@@ -125,7 +127,7 @@
 		<table>
 			<tr>
 				<td>
-					<a href="/FinalProject/lectureapply.do">글쓰기 신청</a>
+					<a href="/FinalProject/guestInputForm.do">글쓰기 신청</a>
 				</td>
 			</tr>
 		</table>

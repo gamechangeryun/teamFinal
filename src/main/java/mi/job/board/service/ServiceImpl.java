@@ -28,8 +28,8 @@ public class ServiceImpl implements mi.job.board.service.Service {
 
 	// 서치된 글 목록 가져오기
 	@Override
-	public List<DTO> getSearchList(int options, String searchContent) {
-		List<DTO> list = dao.getSearchList(options, searchContent);
+	public List<DTO> getSearchList(int options, String searchContent, int startRow, int endRow) {
+		List<DTO> list = dao.getSearchList(options, searchContent, startRow, endRow);
 		return list;
 	}
 
@@ -39,6 +39,15 @@ public class ServiceImpl implements mi.job.board.service.Service {
 		dao.insertContent(dto);
 		
 	}
+	
+	// 서치된 글의 개수 가져오기
+		@Override
+		public int searchCount(int options, String searchContent) {
+			
+			int searchCount = dao.searchCount(options, searchContent);
+			
+			return searchCount;
+		}
 
 	// 글 상세하게 찾아오기
 	@Override

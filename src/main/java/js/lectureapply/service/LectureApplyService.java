@@ -12,7 +12,7 @@ public interface LectureApplyService {
 	public int count();	// 글의 개수 가져오기
 	public int searchCount(int options, String searchContent);	// 서치된 글의 개수 가져오기
 	//////////////////////////////////////////////////////////////////
-	public int getLecture_num(int nowId);	// 학과번호 가져오기
+	public int getLecture_num();	// 강의번호 만들기
 	public int lectureApplySubmit(LectureApplyDTO dto);	// 강의개설신청 허용
 	//////////////////////////////////////////////////////////////////
 	public void lectureApplyRefuse(int id, String lecture_title);	// 강의개설거절되면 해당 리스트 삭제

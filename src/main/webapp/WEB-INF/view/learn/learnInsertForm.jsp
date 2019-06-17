@@ -8,7 +8,8 @@
 
 <form name="insertForm" id="insertForm" action="/FinalProject/learn/LearnInsert.do" method="post" onsubmit="return checkIt()">
 <div>
-<span>강의번호 :<input type="number" name="lecture_num"/></span>
+<span>강의번호 :${lecture_num }</span>  
+<input type="hidden" name="lecture_num" value="${lecture_num }">
 <span>주 차 :<input type="text" name="week"></span>
 <span>학습제목 :<input type="text" name="subject_title"></span>
 <span>최대학습량<input type="number" name="max_study"></span>

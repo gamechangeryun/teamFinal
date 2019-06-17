@@ -111,25 +111,30 @@ public class DAO extends SqlSessionDaoSupport {
 	}
 
 	// 서치된 글 목록 가져오기
-	public List<DTO> getSearchList(int options, String searchContent) {
+	public List<DTO> getSearchList(int options, String searchContent, int startRow, int endRow) {
 
 		List<DTO> list = null;
-
+		Map<String, Object> map= new HashMap<String, Object>();
+		map.put("searchContent", searchContent);
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		
+		
 		if (options == 0) {
-			if (searchContent != " ") {
+			if (!searchContent.equals(" ")) {
 				// 제목으로 찾기
-				list = getSqlSession().selectList("mijobmapper.searchTitle", searchContent);
+				list = getSqlSession().selectList("mijobmapper.searchTitle", map);
 			}
 		} else if (options == 1) {
-			if (searchContent != " ") {
+			if (!searchContent.equals(" ")) {
 				// 내용으로 찾기
-				list = getSqlSession().selectList("mijobmapper.searchContent", searchContent);
+				list = getSqlSession().selectList("mijobmapper.searchContent", map);
 			}
 
 		} else {
-			if (searchContent != " ") {
+			if (!searchContent.equals(" ")) {
 				// 작성자로 찾기
-				list = getSqlSession().selectList("mijobmapper.searchWriter", searchContent);
+				list = getSqlSession().selectList("mijobmapper.searchWriter", map);
 			}
 		}
 
@@ -144,10 +149,43 @@ public class DAO extends SqlSessionDaoSupport {
 		return count;
 	}
 	
+	// 서치된 글의 개수 가져오기
+		public int searchCount(int options, String searchContent) {
+			
+			int searchCount = 0;
+			String result = "";
+			if(options == 0) {
+				if(!searchContent.equals(" ")) {
+					// 제목으로 찾기
+					result = getSqlSession().selectOne("mijobmapper.searchTitleCount", searchContent);
+				}
+			}else if(options == 1) {
+				if(!searchContent.equals(" ")) {
+					// 내용으로 찾기 
+					result = getSqlSession().selectOne("mijobmapper.searchContentCount", searchContent);
+				}
+					
+			}else {
+				if(!searchContent.equals(" ")) {
+					// 작성자로 찾기
+					result = getSqlSession().selectOne("mijobmapper.searchWriterCount", searchContent);
+				}
+			}
+			
+			if(result == null) {
+				result = "0";
+				searchCount = Integer.parseInt(result);
+			}else {
+				searchCount = Integer.parseInt(result);
+			}
+
+			return searchCount;
+		}
+	
 	// 글 상세하게 찾아오기
 		public DTO updateContentInfo(int num) {
 					
-			DTO dto = getSqlSession().selectOne("mijobMapper.detailContent", num);
+			DTO dto = getSqlSession().selectOne("mijobmapper.detailContent", num);
 					
 			return dto;
 		}

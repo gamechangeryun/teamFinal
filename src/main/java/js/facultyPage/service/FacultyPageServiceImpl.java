@@ -9,6 +9,7 @@ import KH.spring.jjin.DTO.WolDTO;
 import js.facultyPage.model.FacultyPageDAO;
 import js.noticeboard.model.NoticeBoardDTO;
 import js.studentPage.model.PrivacyDTO;
+import mi.job.board.model.DTO;
 
 @Service
 public class FacultyPageServiceImpl implements FacultyPageService{
@@ -47,5 +48,13 @@ public class FacultyPageServiceImpl implements FacultyPageService{
 		return list;
 	}
 	
+	// 취업게시판 가져오기
+	@Override
+	public List<DTO> getJobBoard() {
+
+		List<DTO> list = dao.getJobBoard();
+
+		return list;
+	}
 	
 }

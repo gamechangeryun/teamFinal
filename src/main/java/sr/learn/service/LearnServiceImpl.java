@@ -21,8 +21,8 @@ public class LearnServiceImpl implements LearnService {
 	}
 
 	@Override
-	public List<LearnDTO> allList() throws Exception {
-		return ldao.allList();
+	public List<LearnDTO> allList(int lecture_num) throws Exception {
+		return ldao.allList(lecture_num);
 	}
 
 	@Override

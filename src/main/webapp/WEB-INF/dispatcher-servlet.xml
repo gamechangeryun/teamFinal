@@ -28,6 +28,7 @@
 										js.canceledlecture.controller,js.canceledlecture.model,js.canceledlecture.service,
 										js.semesterscore.controller,js.semesterscore.model,js.semesterscore.service,
 										js.totalscore.controller,js.totalscore.model,js.totalscore.service,
+										js.lecturelist.controller,js.lecturelist.model,js.lecturelist.service,
 										wj.anonbd.controller,wj.anonbd.model,wj.anonbd.service,
 										wj.person.controller,wj.person.model,wj.person.service,
 										sr.pro.controller,sr.pro.model,sr.pro.service,
@@ -37,8 +38,10 @@
 										sr.changescoreinput.controller,sr.changescoreinput.model,sr.changescoreinput.service,
 										sr.tuition.controller,sr.tuition.model,sr.tuition.service,
 										sr_controller,sr_service,sr_model,
+										sr.attend.controller,sr.attend.model,sr.attend.service,
 										mi.job.board.controller,mi.job.board.model,mi.job.board.service,
 										mi.gra.board.controller,mi.gra.board.model,mi.gra.board.service,
+										mi.hw.board.controller,mi.hw.board.model,mi.hw.board.service,
 										KH.spring.jjin,
 										ss.qna.controller,ss.qna.model,ss.qna.service
 										" />
@@ -141,6 +144,11 @@
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	
+	<!-- 강의리스트 -->
+	<bean id="lectureList" class="js.lecturelist.model.LectureListDAO">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
 	<!-- 원중 -->
 	<!-- 신규 학생, 교수, 직원 등록  -->
 	<bean id="insertPerson" class="wj.person.model.PersonDao">
@@ -189,6 +197,7 @@
 	<bean id="mtDAO" class="sr_model.MtDAO">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
+	
 	<!--멘토 신청  -->
 	<bean id="requestDAO" class="sr_model.requestDAO">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
@@ -204,6 +213,11 @@
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	
+	<!--교수공지사항  -->
+	<bean id="attenDAO" class="sr.attend.model.AttenDAO">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
 	<!-- 명익 -->
 	<!-- 취업게시판 -->
 	<bean id="DAO" class="mi.job.board.model.DAO">
@@ -212,6 +226,11 @@
 	
 	<!-- 졸업생 -->
 	<bean id="graDAO" class="mi.gra.board.model.graDAO">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 과제제출게시판 -->
+	<bean id="hwDAO" class="mi.hw.board.model.hwDAO">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	

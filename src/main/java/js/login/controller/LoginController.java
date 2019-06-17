@@ -31,7 +31,7 @@ public class LoginController {
 	}
 	
 	// 로그인을 눌렀을 때
-	@RequestMapping(value="/login.do", method=RequestMethod.POST)
+	@RequestMapping(value="/login.do")
 	public String login(@RequestParam("id") int id, @RequestParam("password") String password, 
 						HttpSession session, Model model) {
 		

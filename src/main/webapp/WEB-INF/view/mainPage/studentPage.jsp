@@ -29,6 +29,15 @@
 }
 
 #scholarship {
+	width : 40%;
+	position : static;
+	float: left;
+	position: static;
+}
+
+#jobBoard{
+	width : 40%;
+	float: left;
 	position: relative;
 }
 </style>
@@ -122,6 +131,41 @@
 									<td>${item.scholarship_money }</td>
 									<td>${item.scholarship_num }</td>
 									<td>${item.scholarship_semester }</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="jobBoard">
+				<h2>
+					<strong>취업게시판</strong>
+				</h2>
+				<table border="5px">
+					<tr>
+						<th>글번호</th>
+						<th>제 목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<th>조회수</th>
+					</tr>
+
+					<tr>
+						<c:if test="${jobBoard.size() == 0 }">
+							<h3>
+								<strong>취업게시판에 글이 없습니다.</strong>
+							</h3>
+						</c:if>
+
+						<c:if test="${jobBoard.size() != 0 }">
+							<c:forEach var="item" items="${jobBoard }">
+								<tr>
+									<td>${item.rn }</td>
+									<td><a href="/FinalProject/detailContent.do?num=${item.num}">${item.title }</a></td>
+									<td>${item.name }</td>
+									<td><fmt:formatDate value="${item.writedate }" pattern="yyyy-MM-dd" /></td>
+									<td>${item.readcount }</td>
 								</tr>
 							</c:forEach>
 						</c:if>

@@ -1,6 +1,8 @@
 package sr.changescoreinput.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -40,6 +42,20 @@ public class ChangescoreinputDAO extends SqlSessionDaoSupport{
 	
 	// 신청자 정보 받아오기
 	public ChangescoreinputDTO personInfo(int id, int lecture_num) {
-		return null;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("lecture_num", lecture_num);
+		
+		return getSqlSession().selectOne("changescore.personInfo", map);
+	}
+	
+	public int checkChangeScore(int id, int lecture_num) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("lecture_num", lecture_num);
+		
+		return getSqlSession().selectOne("changescore.checkChangeScore", map);
 	}
 }

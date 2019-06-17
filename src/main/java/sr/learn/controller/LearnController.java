@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,16 +29,17 @@ public class LearnController {
 	
 	//처음시작페이지
 	@RequestMapping("/learn/LearnMain.do")
-	public ModelAndView learnMain()throws Exception{
+	public ModelAndView learnMain(@RequestParam("lecture_num") int lecture_num)throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
 		
-		List<LearnDTO> list = service.allList();
+		List<LearnDTO> list = service.allList(lecture_num);
 		
 		System.out.println("list ::" + list);
 		
 		mav.setViewName("learn/LearnMain");
 		mav.addObject("mainList", list);
+		mav.addObject("lecture_num", lecture_num);
 		
 		return mav;
 	}
@@ -49,7 +52,7 @@ public class LearnController {
 		
 		service.delete(dto);
 		
-		return "redirect:LearnMain.do";
+		return "redirect:LearnMain.do?lecture_num="+Integer.valueOf(dto.getLecture_num());
 	}
 	
 	//현재단계추가
@@ -79,9 +82,9 @@ public class LearnController {
 	
 	//내용입력폼
 	@RequestMapping("/learn/LearnInsertForm.do")
-	public String insertForm() {
+	public String insertForm(@RequestParam("lecture_num") int lecture_num, Model model) {
 		
-		
+		model.addAttribute("lecture_num", lecture_num);
 		
 		return "learn/learnInsertForm";
 	}
@@ -94,7 +97,7 @@ public class LearnController {
 		
 		service.learnInsert(dto);
 		
-		return "redirect:LearnMain.do";
+		return "redirect:LearnMain.do?lecture_num="+Integer.valueOf(dto.getLecture_num());
 		
 	}
 	

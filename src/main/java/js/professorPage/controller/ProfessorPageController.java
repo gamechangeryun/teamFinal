@@ -14,6 +14,7 @@ import KH.spring.jjin.DTO.WolDTO;
 import js.noticeboard.model.NoticeBoardDTO;
 import js.professorPage.service.ProfessorPageService;
 import js.studentPage.model.PrivacyDTO;
+import mi.job.board.model.DTO;
 
 @Controller
 public class ProfessorPageController {
@@ -29,17 +30,22 @@ public class ProfessorPageController {
 	public ModelAndView professorPage(@ModelAttribute("getPicture") String picture,
 										@ModelAttribute("getPrivacy") PrivacyDTO privacyDto,
 										@ModelAttribute("getNoticeBoard") List<NoticeBoardDTO> noticeBoard,
-										@ModelAttribute("getMonthPay") List<WolDTO> getMonthPay) {
+										@ModelAttribute("getJobBoard") List<DTO> jobBoard,
+										@ModelAttribute("getMonthPay") List<WolDTO> getMonthPay,
+										HttpSession session) {
 		
 		int position = 1;
+		String returnPage = (String)session.getAttribute("mainPage");
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("professorPage");
 		mav.addObject("picture", picture);
 		mav.addObject("privacy", privacyDto);
 		mav.addObject("noticeBoard", noticeBoard);
+		mav.addObject("jobBoard", jobBoard);
 		mav.addObject("monthpay", getMonthPay);
 		mav.addObject("position", position);
+		mav.addObject("returnPage", returnPage);
 		
 		return mav;
 	}
@@ -83,6 +89,15 @@ public class ProfessorPageController {
 		
 		List<WolDTO> list = service.getMonthPay(id);
 		
+		return list;
+	}
+	
+	// 공지사항 게시판 리스트 가져오기
+	@ModelAttribute("getJobBoard")
+	public List<DTO> jobBoard() {
+
+		List<DTO> list = service.getJobBoard();
+
 		return list;
 	}
 	

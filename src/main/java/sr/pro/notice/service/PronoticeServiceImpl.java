@@ -22,12 +22,12 @@ public class PronoticeServiceImpl implements PronoticeService {
 
 	// mainPage에 글 정보 찾아오기
 		@Override
-		public List<PronoticeDTO> getList(int startRow, int endRow) {
+		public List<PronoticeDTO> getList(int startRow, int endRow, int lecture_num) {
 				
 			List<PronoticeDTO> list = null;
 			
 			try {
-				list = pdao.getList(startRow, endRow);
+				list = pdao.getList(startRow, endRow, lecture_num);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -37,11 +37,11 @@ public class PronoticeServiceImpl implements PronoticeService {
 
 		// 서치된 글 목록 가져오기
 		@Override
-		public List<PronoticeDTO> getSearchList(int options, String searchContent, int startRow, int endRow) {
+		public List<PronoticeDTO> getSearchList(int options, String searchContent, int startRow, int endRow, int lecture_num) {
 			List<PronoticeDTO> list = null;
 			
 			try {
-				list = pdao.getSearchList(options, searchContent, startRow, endRow);
+				list = pdao.getSearchList(options, searchContent, startRow, endRow, lecture_num);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

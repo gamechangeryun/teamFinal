@@ -29,9 +29,9 @@ public class graServiceImpl implements mi.gra.board.service.graService {
 		
 		// 서치된 글 목록 가져오기
 		@Override
-		public List<graDTO> getSearchList(int options, String searchContent) {
+		public List<graDTO> getSearchList(int options, String searchContent, int startRow, int endRow) {
 			    
-			List<graDTO> list = dao.getSearchList(options, searchContent);
+			List<graDTO> list = dao.getSearchList(options, searchContent, startRow, endRow);
 			
 			return list;    
 		}
@@ -41,6 +41,15 @@ public class graServiceImpl implements mi.gra.board.service.graService {
 		public int count() {
 			int count = dao.count();
 			return count;
+		}
+		
+		// 서치된 글의 개수 가져오기
+		@Override
+		public int searchCount(int options, String searchContent) {
+			
+			int searchCount = dao.searchCount(options, searchContent);
+			
+			return searchCount;
 		}
 		
 }

@@ -87,26 +87,24 @@ public class LectureApplyDAO extends SqlSessionDaoSupport {
 		return searchCount;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////	
-	// 학과번호 가져오기
-	public String getTemper_num(int nowId) {
-
-		String temper_num = getSqlSession().selectOne("lectureapply.getTemperNum", nowId);
-
-		return temper_num;
-	}
-
 	// 마지막 번호 가져오기
-	public String getMaxNum(String temper_num) {
+	public String getMaxNum() {
 
-		String max_num = getSqlSession().selectOne("lectureapply.getMaxNum", temper_num);
+		String max_num = getSqlSession().selectOne("lectureapply.getMaxNum");
 
 		return max_num;
 	}
 		
 	// 강의개설신청허용
 	public int lectureApplySubmit(LectureApplyDTO dto) {
+		System.out.println(dto);
+		int check1 = getSqlSession().insert("lectureapply.insertLecture", dto);
+		int check2 = getSqlSession().insert("lectureapply.insertSchedule", dto);
 		
-		int check = getSqlSession().insert("lectureapply.insertLecture", dto);
+		int check = 0;
+		if(check1 > 0 && check2 > 0) {
+			check = 1;
+		}
 		
 		return check;
 	}

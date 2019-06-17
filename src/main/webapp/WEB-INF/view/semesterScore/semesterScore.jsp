@@ -7,7 +7,7 @@
 </head>
 <body>
 	<form action="/FinalProject/selectSemester.do">
-		<h3>학기선택 </h3>
+		<h2>학기별 성적조회  </h2>
 		<select name="selectSemester">
 				<option value="#" selected="selected">학기선택</option>
 			<c:forEach var="item" items="${semesters }">
@@ -46,7 +46,7 @@
 			
 			<tr>
 				<td colspan="3">해당학기 평점</td>
-				<td>${average }</td>
+				<td colspan="2">${average }</td>
 			</tr>
 		</c:if>
 		

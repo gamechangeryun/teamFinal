@@ -149,10 +149,6 @@ public class GuestInputController {
 		return new File(path); // 파일 객체를 리턴한다.
 	}
 	//////////////////////////////////////////////////////////////////////////////////
-	@RequestMapping("/addBoard.do")
-	public void addBoard() {
-		
-	}
 	
 	
 	

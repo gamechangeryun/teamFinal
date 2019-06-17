@@ -6,7 +6,7 @@ import sr.learn.model.LearnDTO;
 
 public interface LearnService {
 
-	public List<LearnDTO> allList()throws Exception;
+	public List<LearnDTO> allList(int lecture_num)throws Exception;
 	
 	public void delete(LearnDTO dto) throws Exception;
 	

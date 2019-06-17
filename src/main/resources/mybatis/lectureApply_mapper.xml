@@ -59,20 +59,21 @@
 	</select>
 	
 	<!-- ======================================================================================= -->
-	<!-- 학과번호 가져오기 -->
-	<select id="getTemperNum" parameterType="int" resultType="String">
-		select temper_num from person natural join temper where id=#{id}
-	</select>
-	
 	<!-- 마지막 강의개설번호 가져오기 -->
-	<select id="getMaxNum" parameterType="String" resultType="String">
-		select substr(max(lecture_num),3) from lecturelist where substr(lecture_num, 0, 2)=#{temper_num}
+	<select id="getMaxNum" resultType="String">
+		select substr(max(lecture_num),5) from lecturelist
 	</select>
 	
 	<!-- 강의개설리스트에 해당 정보 입력 -->
 	<insert id="insertLecture" parameterType="js.lectureapply.model.LectureApplyDTO">
 		insert into lecturelist
-		values(#{lecture_num}, #{id}, #{lecture_title}, #{lecture_grade}, #{timecode}, #{roomcode}, #{semester})
+		values(#{lecture_num}, #{id}, #{lecture_title}, #{lecture_grade}, #{semester})
+	</insert>
+	
+	<!-- 강의스케쥴에 정보 입력  -->
+	<insert id="insertSchedule" parameterType="js.lectureapply.model.LectureApplyDTO">
+		insert into lectureschedule
+		values(#{lecture_num}, #{timecode}, #{roomcode})
 	</insert>
 	<!-- ====================================================================================== -->
 	<delete id="deleteLectureApply" parameterType="map">

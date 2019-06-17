@@ -18,9 +18,19 @@
 	<select id="getNoticeBoard" resultType="js.noticeboard.model.NoticeBoardDTO">
 		<!-- 부등호 연산을 위해서 CDATA가 필요하다. -->
 		<![CDATA[ 
-			select num, title, name, writedate, readcount, isnotice, rownum r, rn
+			select num, title, name, writedate, readcount, isnotice, rn
 			from (select num, title, name, writedate, readcount, isnotice, rownum rn from notice_bd natural join person order by readcount desc)
-			where rownum <= 5
+			where rn <= 5
+		 ]]>
+	</select>
+	
+	<!-- 취업게시판 가져오기 -->
+	<select id="getJobBoard" resultType="mi.job.board.model.DTO">
+		<!-- 부등호 연산을 위해서 CDATA가 필요하다. -->
+		<![CDATA[ 
+			select num, title, name, writedate, readcount, isnotice, rn
+			from (select num, title, name, writedate, readcount, isnotice, rownum rn from job_bd natural join person order by readcount desc)
+			where rn <= 5
 		 ]]>
 	</select>
 	

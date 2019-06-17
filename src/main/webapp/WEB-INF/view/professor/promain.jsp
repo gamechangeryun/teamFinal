@@ -49,9 +49,14 @@ ul.tabs li.current{
 .tab-content.current{
   display: inherit;
 }
-
 </style>
 <title>교수메인</title>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function(){
 	   
@@ -76,17 +81,16 @@ $(document).ready(function(){
 		  <li class="tab-link" data-tab="tab-3">강의자료실</li>
 		  <li class="tab-link" data-tab="tab-4">출석</li>
 		  <li class="tab-link" data-tab="tab-5">과제</li>
-		  <li class="tab-link" data-tab="tab-6">과목정보</li>
 		</ul> 
 		  
 		<!--공지사항  -->
 		<div id="tab-1" class="tab-content current">
-		공지사항
+			<a href="/FinalProject/PronoticeboardMain.do?lecture_num=${lecture_num }">공지사항</a>
 		</div>
 		
 		<!--학습목차  -->
 		<div id="tab-2" class="tab-content">
-		학습목차
+			<a href="/FinalProject/learn/LearnMain.do?lecture_num=${lecture_num }">학습목차</a>
 		</div>
 		
 		<!--강의자료실  -->
@@ -96,17 +100,17 @@ $(document).ready(function(){
 		
 		<!--출석  -->
 		<div id="tab-4" class="tab-content">
-		출석
+			<c:if test="${position == 0 }">
+				<a href="/FinalProject/atten/daypage.do?lecture_num=${lecture_num }">출석확인</a>
+			</c:if>
+			<c:if test="${position == 1 }">
+				<a href="/FinalProject/atten/attenMain.do?lecture_num=${lecture_num }">출석입력</a>
+			</c:if>
 		</div>
 		
 		<!--과제  -->
 		<div id="tab-5" class="tab-content">
-		과제
-		</div>
-		
-		<!--과목정보  -->
-		<div id="tab-6" class="tab-content">
-		과목정보
+			<a href="/FinalProject/hw_bd/board.do?lecture_num=${lecture_num }">과제제출</a>
 		</div>
 	
 		<!--메뉴 들어가기전에 메인에서 보여줄 공간  -->
@@ -114,19 +118,19 @@ $(document).ready(function(){
 		<div>
 			<table class="table">
 				<tr>
-					<td rowspan="5" align="center">교수사진</td>
+					<td rowspan="5" align="center"><img alt="교수사진" src="/FinalProject/${picture }" width="120" height="120"></td>
 				</tr>
 				<tr>
-					<td>대표교수</td><td><!--  --></td>
+					<td>교수명 &nbsp;</td><td>${proInfo.name }</td>
 				</tr>
 				<tr>
-					<td>학과명</td><td><!--  --></td>
+					<td>학과명 &nbsp;</td><td>${proInfo.temper_name }</td>
 				</tr>
 				<tr>
-					<td>이메일</td><td><!--  --></td>
+					<td>이메일 &nbsp;</td><td>${proInfo.email }</td>
 				</tr>
 				<tr>
-					<td>강의실</td><td><!--  --></td>
+					<td>강의실 &nbsp;</td><td>${proInfo.roomcode }</td>
 				</tr>
 			</table>
 		</div>

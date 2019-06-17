@@ -23,14 +23,18 @@ public class graDAO extends SqlSessionDaoSupport {
 		}
 	   
 	// 서치된 글 목록 가져오기
-		public List<graDTO> getSearchList(int options, String searchContent) {
+		public List<graDTO> getSearchList(int options, String searchContent, int startRow, int endRow) {
 
 			List<graDTO> list = null;
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("searchContent", searchContent);
+			map.put("startRow", startRow);
+			map.put("endRow", endRow);
 
 			if (options == 0) {
 				if (searchContent != " ") {
 					// 이름으로 찾기
-					list = getSqlSession().selectList("migramapper.searchName", searchContent);
+					list = getSqlSession().selectList("migramapper.searchName", map);
 				}
 			} 
 
@@ -44,5 +48,27 @@ public class graDAO extends SqlSessionDaoSupport {
 
 			return count;
 		}
+		
+		// 서치된 글의 개수 가져오기
+				public int searchCount(int options, String searchContent) {
+					
+					int searchCount = 0;
+					String result = "";
+					if(options == 0) {
+						if(!searchContent.equals(" ")) {
+							// 제목으로 찾기
+							result = getSqlSession().selectOne("migramapper.searchNameCount", searchContent);
+						}
+					}
+					
+					if(result == null) {
+						result = "0";
+						searchCount = Integer.parseInt(result);
+					}else {
+						searchCount = Integer.parseInt(result);
+					}
+
+					return searchCount;
+				}
 
 }

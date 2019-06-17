@@ -45,7 +45,10 @@ public class ChangescoreinputServiceImpl implements ChangescoreinputService {
 	public ChangescoreinputDTO personInfo(int id, int lecture_num) {
 		return cdao.personInfo(id, lecture_num);
 	}
-	
-	
 
+	@Override
+	public int checkChangeScore(int id, int lecture_num) {
+		return cdao.checkChangeScore(id, lecture_num);
+	}
+	
 }

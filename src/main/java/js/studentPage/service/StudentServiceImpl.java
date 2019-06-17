@@ -9,6 +9,7 @@ import js.noticeboard.model.NoticeBoardDTO;
 import js.scholarship.model.ScholarshipDTO;
 import js.studentPage.model.PrivacyDTO;
 import js.studentPage.model.StudentPageDAO;
+import mi.job.board.model.DTO;
 
 @Service
 public class StudentServiceImpl implements StudentService{
@@ -55,8 +56,14 @@ public class StudentServiceImpl implements StudentService{
 		
 		return list;
 	}
-	
-	
-	
+
+	// 취업게시판 가져오기
+	@Override
+	public List<DTO> getJobBoard() {
+
+		List<DTO> list = dao.getJobBoard();
+		
+		return list;
+	}
 	
 }

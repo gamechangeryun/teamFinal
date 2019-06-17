@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mihwmapper">
+
+<!-- 글 목록 찾기 -->
+	<select id="getList" resultType="mi.hw.board.model.hwDTO">
+		select homework_num, lecture_num, homework_title, homework_date, homework_sub, name, rn
+		from(select homework_num, lecture_num, homework_title, homework_date, homework_sub, name, rownum rn
+		from hw_bd natural join person)
+		where rn between #{startRow} and #{endRow}
+		order by rn asc
+	</select>
+	
+	<!-- 글 추가 -->
+	<insert id="insertContent" parameterType="mi.hw.board.model.hwDTO">
+		insert into hw_bd(HOMEWORK_NUM, LECTURE_NUM, HOMEWORK_TITLE, HOMEWORK_DATE, ID)
+		values(hw_bd_seq.nextval, #{lecture_num}, #{homework_title}, sysdate, #{id})
+	</insert>
+	
+	<!-- 파일첨부 -->
+	<insert id="insertFile" parameterType="mi.hw.board.model.hwDTO">
+		insert into hw_file
+		values(hw_file_seq.nextval, #{realname}, #{realpath}, #{realsize})
+	</insert>  
+	
+	<!-- 글 상세보기 -->
+	<select id="detailContent" parameterType="int" resultType="mi.hw.board.model.hwDTO">
+		select homework_num, name, lecture_num, homework_title, homework_date, rn
+		from (select homework_num, name, lecture_num, homework_title, homework_date, rownum rn from hw_bd natural join person)
+		where homework_num=#{homework_num}
+	</select>
+	
+	<!-- 글 수정 -->
+	<update id="updateContent" parameterType="mi.hw.board.model.hwDTO">
+		update hw_bd
+		set homework_num=#{homework_num}, id=#{id}, homework_title=#{homework_title}, homework_date=sysdate
+		where homework_num=#{homework_num}
+	</update>
+	
+	<!-- 과제 제출 확인 -->
+	<update id="hwsubon" parameterType="mi.hw.board.model.hwDTO">
+		update hw_bd
+		set homework_sub='제출'
+		where homework_num=#{homework_num}
+		
+	</update>
+	
+	<!-- 글 수정 파일 수정 -->
+	<insert id="changeUpdateFile" parameterType="mi.hw.board.model.hwDTO">
+		update hw_file
+		set homework_num=#{homework_num}, realname=#{realname}, realpath=#{realpath}, realsize=#{realsize}
+		where homework_num=#{homework_num}
+	</insert>  
+	
+	<!-- 글 삭제 -->
+	<delete id="deleteContent" parameterType="int">
+		delete from hw_bd where homework_num=#{homework_num}
+	</delete>
+
+	<!-- 파일 삭제 -->
+	<delete id="deleteFile" parameterType="int">
+		delete from hw_file where homework_num=#{homework_num}
+	</delete>
+	
+	<!-- 다운로드할 파일의 이름 가져오기 -->
+	<select id="fileName" parameterType="int" resultType="String">
+		select realname from hw_file where homework_num=#{homework_num}
+	</select>
+	
+	<!-- 다운로드할 파일의 경로 가져오기 -->
+	<select id="downloadFilePath" parameterType="int" resultType="String">
+		select realpath from hw_file where homework_num=#{homework_num}
+	</select>
+	
+	<!-- 제목으로 글 찾기 -->
+	<select id="searchTitle" parameterType="map" resultType="mi.hw.board.model.hwDTO">
+		select homework_num, id, homework_title, homework_date, rn
+		from (select homework_num, id, homework_title, homework_date, rownum rn 
+		from hw_bd natural join person
+		where homework_title like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc
+	</select>
+	
+	<!-- 작성자으로 글 찾기 -->
+	<select id="searchWriter" parameterType="map" resultType="mi.hw.board.model.hwDTO">
+		select homework_num, id, homework_title, homework_date, rn
+		from (select homework_num, id, homework_title, homework_date, rownum rn
+		from hw_bd natural join person
+		where id like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc  
+	</select>
+	
+	<!-- 제목으로 글 찾기 개수 -->
+	<select id="searchTitleCount" parameterType="String" resultType="String">
+		select count(*)
+		from hw_bd
+		where homework_title like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자으로 글 찾기 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from hw_bd natural join person
+		where id like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 글의 개수 가져오기 -->
+	<select id="count" resultType="int">
+		select count(*) from hw_bd
+	</select>
+
+</mapper>

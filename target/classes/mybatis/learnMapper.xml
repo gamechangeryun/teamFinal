@@ -3,8 +3,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="LearnMapper">
-	<select id="allList" resultType="sr.learn.model.LearnDTO">
-		select * from learn_bd
+	<select id="allList" parameterType="int" resultType="sr.learn.model.LearnDTO">
+		select * from learn_bd where lecture_num = #{lecture_num}
 	</select>
 	
 	<delete id="delete" parameterType="sr.learn.model.LearnDTO">
@@ -16,7 +16,16 @@
 	</select>
 	
 	<update id="addNow" parameterType="sr.learn.model.LearnDTO">
-		update learn_bd set now_study=#{now_study} where lecture_num=#{lecture_num} and week like '%'||#{week}||'%'
+		update learn_bd
+		<set>
+			<if test="now_study != max_study">
+			now_study=#{now_study}
+			</if>
+			<if test="now_study == max_study">
+			now_study=max_study
+			</if>
+			where lecture_num=#{lecture_num} and week like '%'||#{week}||'%'
+		</set>
 	</update>
 	
 	<update id="deleteNow" parameterType="sr.learn.model.LearnDTO">

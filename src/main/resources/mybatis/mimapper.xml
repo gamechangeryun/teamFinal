@@ -5,12 +5,12 @@
 <mapper namespace="mijobmapper">
 
 <!-- 글 목록 찾기 -->
-	<select id="getList" parameterType="map" resultType="mi.job.board.model.DTO">
+	<select id="getList" resultType="mi.job.board.model.DTO">
 		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
 		from(select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename 
 		from job_file natural join job_bd natural join person)
 		where rn between #{startRow} and #{endRow}
-		order by rn desc
+		order by rn asc
 	</select>
 	
 	<!-- 글 추가 -->
@@ -79,30 +79,54 @@
 	</select>
 	
 	<!-- 제목으로 글 찾기 -->
-	<select id="searchTitle" parameterType="String" resultType="mi.job.board.model.DTO">
+	<select id="searchTitle" parameterType="map" resultType="mi.job.board.model.DTO">
 		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
 		from (select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename 
-		from job_file natural join job_bd natural join person)
-		where title like '%'||#{searchContent}||'%'
+		from job_file natural join job_bd natural join person
+		where title like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
 		order by rn desc
 	</select>
 	
 	<!--내용으로 글 찾기 -->
-	<select id="searchContent" parameterType="String" resultType="mi.job.board.model.DTO">
+	<select id="searchContent" parameterType="map" resultType="mi.job.board.model.DTO">
 		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
 		from (select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename 
-		from job_file natural join job_bd natural join person) 
-		where content like '%'||#{searchContent}||'%'
+		from job_file natural join job_bd natural join person 
+		where content like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
 		order by rn desc
 	</select>
 	
 	<!-- 작성자으로 글 찾기 -->
-	<select id="searchWriter" parameterType="String" resultType="mi.job.board.model.DTO">
+	<select id="searchWriter" parameterType="map" resultType="mi.job.board.model.DTO">
 		select num, id, name, title, content, writedate, readcount, isnotice, rn, fakename
 		from (select num, id, name, title, content, writedate, readcount, isnotice, rownum rn, fakename
-		from job_file natural join job_bd natural join person) 
+		from job_file natural join job_bd natural join person
+		where name like '%'||#{searchContent}||'%')
+		where rn between #{startRow} and #{endRow}
+		order by rn desc  
+	</select>
+	
+	<!-- 제목으로 글 찾기 개수 -->
+	<select id="searchTitleCount" parameterType="String" resultType="String">
+		select count(*)
+		from job_bd
+		where title like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!--내용으로 글 찾기 개수 -->
+	<select id="searchContentCount" parameterType="String" resultType="String">
+		select count(*)
+		from job_bd 
+		where content like '%'||#{searchContent}||'%'
+	</select>
+	
+	<!-- 작성자으로 글 찾기 개수 -->
+	<select id="searchWriterCount" parameterType="String" resultType="String">
+		select count(*)
+		from job_bd natural join person
 		where name like '%'||#{searchContent}||'%'
-		order by rn desc
 	</select>
 	
 	<!-- 글의 개수 가져오기 -->

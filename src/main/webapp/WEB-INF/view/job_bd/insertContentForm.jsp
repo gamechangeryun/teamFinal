@@ -8,7 +8,7 @@
 	function checkIt(){
 		var myform = eval("document.myform");
 		
-		if(!myform.subject.value){
+		if(!myform.title.value){
 			alert("글제목을 입력하세요");
 			return false;
 		}
@@ -40,8 +40,8 @@
 				
 				<tr>
 					<td><h5>글내용작성</h5></td>
-					<td colspan="3">
-					<textarea rows="20" cols="100" name="content" ></textarea></td>   
+					<td colspan="3"><textarea rows="20" cols="100" name="content" >
+					</textarea></td>
 				</tr>
 				
 				<tr>
@@ -52,7 +52,9 @@
 				</tr>
 				
 				<tr>
-					<td colspan="4"><input type="submit" value="작성완료"></td>
+					<td colspan="4">
+					<input type="button" value="작성취소" onclick="location.href='/FinalProject/job_bd/board.do'">
+					<input type="submit" value="작성완료"></td>
 				</tr>
 		</table>
 	</form>

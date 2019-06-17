@@ -23,4 +23,14 @@
 	</update>
 	
 	<!-- 신청자 정보 받아오기 -->
+	<select id="personInfo" parameterType="map" resultType="sr.changescoreinput.model.ChangescoreinputDTO">
+		select lecture_num, id, name
+		from listenlist natural join person
+		where id=#{id} and lecture_num=#{lecture_num}
+	</select>
+	
+	<!-- 신청여부 -->
+	<select id="checkChangeScore" parameterType="map" resultType="int">
+		select count(*) from changescoreinput where id=#{id} and lecture_num=#{lecture_num}
+	</select>
 </mapper>

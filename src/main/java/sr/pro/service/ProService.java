@@ -1,10 +1,8 @@
 package sr.pro.service;
 
-import java.util.List;
-
-
 import sr.pro.model.ProDTO;
 
 public interface ProService {
-	List<ProDTO> allList()throws Exception;
+	ProDTO allList(int lecture_num)throws Exception;
+	String picture(int id);
 }

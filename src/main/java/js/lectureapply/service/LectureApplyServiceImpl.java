@@ -1,6 +1,7 @@
 package js.lectureapply.service;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,20 +62,37 @@ public class LectureApplyServiceImpl implements LectureApplyService{
 		return searchCount;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////
-	// 학과번호 가져오기
+	// 강의번호 만들기
 	@Override
-	public int getLecture_num(int nowId) {
-
-		String temper_num = dao.getTemper_num(nowId); // 학과번호 가져오기
-		String getMaxNum = dao.getMaxNum(temper_num); // 가장 마지막 번호 두자리 가져오기
+	public int getLecture_num() {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String sub = format.format(date);
+		
+		String year = sub.substring(2, 4);
+		System.out.println("year :: " + year);
+		
+		String month = sub.substring(5, 7);
+		System.out.println("month::" + month);
+		
+		String semester = "";
+		if(Integer.parseInt(month) <= 6) {
+			semester="01";
+		}else {
+			semester="02";
+		}
+		
+		String getMaxNum = dao.getMaxNum(); // 가장 마지막 번호 두자리 가져오기
 
 		// 만약, 마지막 번호가 null일 때 -> 0일때
 		if (getMaxNum == null) {
 			getMaxNum = "00";
 		}
 
-		String result = temper_num + getMaxNum;
+		String result = year + semester + getMaxNum;
 		int temp = Integer.parseInt(result) + 1;
+		System.out.println("result :: "+ result);
 
 		return temp;
 	}

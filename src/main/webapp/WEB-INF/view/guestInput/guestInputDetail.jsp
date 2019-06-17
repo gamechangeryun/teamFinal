@@ -13,7 +13,14 @@
 				<td>글번호</td>
 				<td>${detailContent.rn }</td>
 				<td>글제목</td> 
-				<td colspan="2">${detailContent.title }</td>
+				<td>${detailContent.title }</td>
+				<td>업로드게시판</td>
+				<c:if test="${detailContent.selectBoard == 1 }">
+					멘토멘티게시판
+				</c:if>
+				<c:if test="${detailContent.selectBoard == 2 }">
+					취업게시판
+				</c:if>
 			</tr>
 				
 			<tr>
