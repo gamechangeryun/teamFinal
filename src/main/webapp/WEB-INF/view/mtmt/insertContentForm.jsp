@@ -88,7 +88,7 @@ h2{text-align:center;}
 		<br>
 		<div class="form-group">
 			<input type="submit" class="btn btn-info btn-xs" value="작성완료">
-			<input type="button" class="btn btn-info btn-xs" value="목록으로" onclick="location.href='<%=cp%>/mtmt.do'">
+			<input type="button" class="btn btn-info btn-xs" value="목록으로" onclick="location.href='<%=cp%>/mtmt/mtmtlist.do'">
 		</div>
 		
 	</form>

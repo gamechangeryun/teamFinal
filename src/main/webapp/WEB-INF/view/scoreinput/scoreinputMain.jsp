@@ -23,7 +23,7 @@ $(function(){
 		,dataType:"json"	
 		,success:function(args){	
 			 for(var idx=0; idx<args.data.length; idx++) {	
-				 $("#lecture").append("<option value='"+args.data[idx].lecture_num+"'>"+args.data[idx].lecture_title+"</option>");
+				 $("#lecture").append("<option class='btn btn-info' value='"+args.data[idx].lecture_num+"'>"+args.data[idx].lecture_title+"</option>");
 			 }
 		}
 	    ,error:function(e) {	
@@ -57,23 +57,17 @@ function inputList() {
 			
 			if(args.data1.length > 0){
 				for(i=0; i<args.data1.length; i++){
-					html += "<div>";
-	                html += "<div><table class='table'>";
-	                html += "<tr><td>";
-	                html += "<strong>이름:"+args.data1[i].name+"</strong>"
-	                html += "<strong> 학과명:"+args.data1[i].temper_name+"</strong>"
-	                html += " <input type='number' name='scoreinputDtoList["+i+"].score' width='10px' min='0' maxlength='5' oninput='maxlength(this)' placeholder='성적입력란'>"
-	                html += "</td></tr>";
+	                html += "<tr class='table-success'>";
+	                html += "<td><strong>"+args.data1[i].name+"</strong></td>"
+	                html += "<td><strong>"+args.data1[i].temper_name+"</strong><td>"
+	                html += "<td><input type='number' name='scoreinputDtoList["+i+"].score' width='10px' min='0' maxlength='5' oninput='maxlength(this)' placeholder='성적입력란'></td>"
+	                html += "</tr>";
 	                html += "<input type='hidden' name='scoreinputDtoList["+i+"].id' value="+args.data1[i].id+">"
 	                html += "<input type='hidden' name='scoreinputDtoList["+i+"].lecture_num' value="+args.data1[i].lecture_num+">"
-	                html += "</table></div>";
-	                html += "</div>";
 				}
 			}else{
-				html += "<div>";
-                html += "<div><table class='table'><h6><strong>조회된 내용이 없습니다.</strong></h6>";
-                html += "</table></div>";
-                html += "</div>";
+				html += "<div><table class='table table-hover'><h6><strong>조회된 내용이 없습니다.</strong></h6>";
+		        html += "</table></div>";
 			}
 			
 			$("#cnt").html(cnt);
@@ -108,7 +102,6 @@ $(document).ready(function(){
 			dataType:"json",
 			data:$(this).serialize(),
 			success:function(args){
-				alert("성적입력완료");
 			},
 			error:function(e){
 			}
@@ -121,27 +114,41 @@ $(document).ready(function(){
 </head>
 <body>
 
-<select id="lecture">
-  <option value="">::강의선택::</option>
-</select>
 
-<!-- <select id="student">
-  <option value="">::이름순::</option>
-</select> -->
-<button id="button" onclick="inputList();">조회</button>
+<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+  <div class="btn-group" role="group">
+	<select id="lecture" class="btn btn-info dropdown-toggle">
+	  <option class='btn btn-info' value="">::강의선택::</option>
+	</select>
+  </div>
+</div>
 
+<button id="button" class="btn btn-primary" onclick="inputList();">조회</button>
 
 <form id="myform" method="post">
-<div>
-조회인원::<span id="cnt">
-</span>명
-</div>
-<div>
-	<span id="snamelist"></span>
-</div>
 
-<input type="submit" name="sub" value="성적입력">
-<input type="button" value="메인으로" onclick="location.href='/FinalProject/${returnPage}'">
+<!--조회된 인원 출력 위치  -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active">
+  	<div>
+		조회인원::<span id="cnt">
+		</span>명
+	</div>
+  </li>
+</ol>
+
+<!--성적 입력 인원 출력 위치  -->
+<table id="snamelist" class="table table-hover">
+    <tr class="table-primary">
+      <th>이름</th>
+      <th>학과</th>
+      <th>성적입력</th>
+    </tr>
+	
+</table> 
+
+<input type="submit" name="sub" value="성적입력" class="btn btn-primary">
+<input type="button" value="메인으로" class="btn btn-link" onclick="location.href='/FinalProject/${returnPage}'">
 </form>
 
 </body>

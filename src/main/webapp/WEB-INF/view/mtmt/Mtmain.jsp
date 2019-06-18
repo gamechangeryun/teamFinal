@@ -5,23 +5,20 @@
     String cp = request.getContextPath(); //첫번째 경로를 가져온다
 	request.setCharacterEncoding("UTF-8");
 %>
-<%@ include file="bootstrap.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <title>멘토 멘티 게시판</title>
-<style type="text/css">
-h2{text-align: center;}
-</style>
+<%@ include file="../bootstrap.jsp" %>
+<link rel="stylesheet" type="text/css" href="../bootstrap.min.css">
+
 </head>
 <body>
-	<div class="h2">
-		<h2>멘토 멘티 게시판</h2>
-	</div>
 	<form>
 	<div class="container">
-		<table class="table table-striped">
-			<tr>
+		<h2>멘토 멘티 게시판</h2>
+		<table class="table table-hover">
+			<tr class="table-primary">
 				<th>번호</th>
 				<th>제 목</th>
 				<th>인원수</th>
@@ -33,15 +30,15 @@ h2{text-align: center;}
 			<c:if test="${searchList.size() == 0 }">
 			
 				<c:if test="${mainList.size() == 0}">
-					<tr>
+					<tr class="table-primary">
 						<td colspan="6">글이 없습니다.</td>
 					</tr>
 				</c:if>
 			
 				<c:if test="${mainList.size() > 0 }">
-					<tr>
+					<tr class="table-success">
 						<c:forEach var="item" items="${mainList}">
-						<tr>
+						<tr class="table-success">
 							<td>${item.num}</td>
 							<td><a href="<%=cp%>/mtmt/detailContent.do?num=${item.num}">${item.title}</a></td>
 							<td>${item.nowpeople} / ${item.maxpeople}</td>
@@ -56,9 +53,9 @@ h2{text-align: center;}
 			</c:if>
 			
 			<c:if test="${searchList.size() > 0 }">
-				<tr>
+				<tr class="table-success">
 					<c:forEach var="item" items="${searchList}">
-						<tr>
+						<tr class="table-success">
 							<td>${item.num}</td>
 							<td><a href="<%=cp%>/mtmt/detailContent.do?num=${item.num}">${item.title }</a></td>
 							<td>${item.nowpeople} / ${item.maxpeople}</td>
@@ -70,7 +67,7 @@ h2{text-align: center;}
 				</tr>
 			</c:if>
 			
-			<tr>
+			<tr class="table-secondary">
 				<td colspan="6">
 				<c:if test="${count > 0}">
 				   <c:set var="pageCount" value="${count / pageSize + ( count % pageSize == 0 ? 0 : 1)}"/><!-- 총 페이지 개수 -->
@@ -83,7 +80,7 @@ h2{text-align: center;}
 				        <c:set var="endPage" value="${pageCount}"/>
 				   </c:if>
 				         
-				   <c:if test="${startPage > pageSize}">
+				  <%--  <c:if test="${startPage > pageSize}">
 				        <a href="<%=cp%>/mtmt/mtmtlist.do?pageNum=${startPage - pageSize }">[이전]</a>
 				   </c:if>
 	
@@ -93,28 +90,53 @@ h2{text-align: center;}
 				
 				   <c:if test="${endPage < pageCount}">
 				        <a href="<%=cp%>/mtmt/mtmtlist.do?pageNum=${startPage + pageSize}">[다음]</a>
+				   </c:if> --%>
+				   
+				   <ul class="pagination pagination-sm">
+				   <c:if test="${startPage > pageSize}">
+					    <li class="page-item disabled">
+					      <a class="page-link" href="<%=cp%>/mtmt/mtmtlist.do?pageNum=${startPage - pageSize }">&laquo;</a>
+					    </li>
 				   </c:if>
+	
+				   <c:forEach var="i" begin="${startPage}" end="${endPage}">
+					    <li class="page-item active">
+					      <a class="page-link" href="<%=cp%>/mtmt/mtmtlist.do?pageNum=${i}">${i}</a>
+					    </li>
+				   </c:forEach>
+				
+				   <c:if test="${endPage < pageCount}">
+					    <li class="page-item">
+					      <a class="page-link" href="<%=cp%>/mtmt/mtmtlist.do?pageNum=${startPage + pageSize}">&raquo;</a>
+					    </li>
+				   </c:if>
+				   </ul>
+				   
 				</c:if>
 				</td>
 			</tr>
 		
-			<tr>
-				<td colspan="6"><input type="button" class="btn btn-info btn-xs" value="글쓰기" onclick="location.href='<%=cp%>/mtmt/insertContentForm.do'" >
-					<input type="button" class="btn btn-info btn-xs" value="전체글보기" onclick="location.href='<%=cp%>/mtmt/mtmtlist.do'" >
+			<tr class="table-active">
+				<td colspan="6"><input type="button" class="btn btn-primary btn-xs" value="글쓰기" onclick="location.href='<%=cp%>/mtmt/insertContentForm.do'" >
+					<input type="button" class="btn btn-primary btn-xs" value="전체글보기" onclick="location.href='<%=cp%>/mtmt/mtmtlist.do'" >
 				</td>
 			</tr>
 			
 			<tr>
 				<td colspan="6">
-					<select name="options">
-						<option value="0" selected="selected">제목</option>
-						<option value="1">내용</option>
-						<option value="2">작성자</option>
-					</select>
-			
-					<input type="text" name="searchContent" value="">
-			
-					<input type="submit" value="찾기">
+				
+					<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+					  <div class="btn-group" role="group">
+						<select name="options" class="btn btn-secondary dropdown-toggle">
+							<option value="0" class="btn btn-secondary" selected="selected">제목</option>
+							<option value="1" class="btn btn-secondary">내용</option>
+							<option value="2" class="btn btn-secondary">작성자</option>
+						</select>
+					  </div>
+						&nbsp; &nbsp;<input name="searchContent" class="form-control mr-sm-2" type="text" placeholder="Search">
+						<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+					</div>
+				
 				</td>
 			</tr>
 		</table>

@@ -23,6 +23,9 @@ function checkIt(){
 	return true;
 }
 </script>
+<%@ include file="../bootstrap.jsp" %>
+<link rel="stylesheet" type="text/css" href="../bootstrap.min.css">
+
 </head>
 <body>
 

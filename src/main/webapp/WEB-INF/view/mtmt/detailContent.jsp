@@ -7,8 +7,6 @@
     String cp = request.getContextPath(); //첫번째 경로를 가져온다
 	request.setCharacterEncoding("UTF-8");
 %>
-<%@ include file="bootstrap.jsp" %>
-<%@ include file="boot4.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,37 +35,40 @@ $(document).ready(function(){
 	});
 });
 </script>
+<%@ include file="../bootstrap.jsp" %>
+<link rel="stylesheet" type="text/css" href="../bootstrap.min.css">
 
 </head>
 <body>
 	<form name="form1" method="post">
 	<div class="container">
 		<table class="table table-striped">
-			<tr>
+			<tr class="table-primary">
 				<td>글번호 : ${detailContent.num }</td>
 				<td>작성일 : <fmt:formatDate value="${detailContent.writedate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			</tr>
-			<tr>
+			<tr class="table-success">
 				<td>제목 : ${detailContent.title }</td>
 				<td>작성자 : ${detailContent.id }</td>
 			</tr>
-			<tr>
+			<tr class="table-success">
 				<td>파일</td> 
 				<c:if test="${name == null }">
-					<td colspan="5">첨부파일이 없습니다.</td>
+					<td colspan="2">첨부파일이 없습니다.</td>
 				</c:if>
 				
 				<c:if test="${name != null }">
-					<td colspan="5"><a href="<%=cp%>/mtmt/fileDownload.do?num=${detailContent.num }">${name }</a></td>
+					<td colspan="2"><a href="<%=cp%>/mtmt/fileDownload.do?num=${detailContent.num }">${name }</a></td>
 				</c:if>
 			</tr>	
-			<tr>
-				<td>글내용 : ${detailContent.content }</td>
-				<td>인원수 :<span id="nowpeople"></span>/ ${detailContent.maxpeople }</td>
+			<tr class="table-success">
+				<td colspan="2">글내용 : ${detailContent.content }</td>
 			</tr>
-			
-			<tr>
-				<td><input type="hidden" name="num" value="${detailContent.num }">
+			<tr class="table-warning">
+				<td colspan="2">신청인원수 :<span id="nowpeople"></span>/ ${detailContent.maxpeople }</td>
+			</tr>
+			<tr class="table-active">
+				<td colspan="2"><input type="hidden" name="num" value="${detailContent.num }">
 				<button type="button" id="btnUpdate" class="btn btn-info btn-xs">수정</button>
 				<button type="button" id="btnDelete" class="btn btn-info btn-xs">삭제</button>
 				<button type="button" id="btnList" class="btn btn-info btn-xs">글목록으로</button></td>

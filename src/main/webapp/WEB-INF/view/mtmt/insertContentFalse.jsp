@@ -7,7 +7,7 @@
 <html>
 <head>
 <title>글 추가 실패</title>
-<meta http-equiv="refresh" content="3;url=<%=cp%>/mtmt/mtmtlist.do">
+<meta http-equiv="refresh" content="1;url=<%=cp%>/mtmt/mtmtlist.do">
 </head>
 <body>
 	글 추가 실패

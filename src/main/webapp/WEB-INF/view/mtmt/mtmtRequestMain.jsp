@@ -104,15 +104,13 @@ function requestDelete(id){
 <div class="container">
     <form id="requestForm" name="requestForm" method="post">
 	    
-	    <div class="container">
-			<div class="btn-group btn-group-toggle btn-xs">	
-					<label class="btn btn-primary btn-xs">
-						<input type="radio" name="req">멘티신청 
-					</label> 
-					<label class="btn btn-primary btn-xs">
-						<input type="radio" name="delete">신청취소
-					</label>
-			</div>
+		<div class="btn-group btn-group-toggle btn-xs">	
+				<label class="btn btn-primary btn-xs">
+					<input type="radio" name="req">멘티신청 
+				</label> 
+				<label class="btn btn-primary btn-xs">
+					<input type="radio" name="delete">신청취소
+				</label>
 		</div>
     
         <input type="hidden" id="num" name="num" value="${detailContent.num }" />  

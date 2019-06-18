@@ -45,52 +45,54 @@ $(document).ready(function(){
 });
 
 </script>	
+<%@ include file="../bootstrap.jsp" %>
+<link rel="stylesheet" type="text/css" href="../bootstrap.min.css">
 
 </head>
 <body>
-	<form name="form1" method="post" enctype="multipart/form-data">
 	<div class="container">
-		<table class="table table-striped">
-			<tr>
-				<td>글번호</td>
-				<td>${detailContent.num }</td>
-				<td>글제목</td> 
-				<td><input type="text" name="title" id="title" value="${detailContent.title }"></td>
-				<td>조회수</td> 
-				<td>${detailContent.readcount }</td>
-			</tr>
-				
-			<tr>
-				<td>작성자</td> 
-				<td>${detailContent.id }</td>
-				<td>작성일</td>
-				<td><fmt:formatDate value="${detailContent.writedate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-			</tr>
-				
-			<tr>
-				<td><h5>글내용</h5></td>
-				<td colspan="5"><textarea rows="5" cols="70" name="content" id="content">${detailContent.content }</textarea></td>
-			</tr>
-			
-			<tr>
-				<td>최대인원수</td>
-				<td><input type="number" class="form-control" min="5" max="10" id="maxpeople" name="maxpeople" value="${detailContent.maxpeople }"></td>
-			</tr>
-			
-			<tr>
-				<td>파일첨부</td>   
-				<td colspan="2"><input type="file" name="file"></td>
-			</tr>
-			<tr>
-				<td><input type="hidden" name="num" value="${detailContent.num }">
-				<button type="button" id="btnUpdate" class="btn btn-info btn-xs">수정</button>
-				<button type="button" id="btnDelete" class="btn btn-info btn-xs">삭제</button></td>
-				<td><button type="button" id="btnList" class="btn btn-info btn-xs">글목록으로</button></td>
-			</tr>
-			
-		</table>
+	<h1><strong>글 수정하기</strong></h1>
+		<form name="form1" method="post" enctype="multipart/form-data">
+		
+		<div class="form-group">
+			<label for="num">글번호</label>
+			<input type="text" readonly name="num" class="form-control" value="${detailContent.num }">
+		</div>
+		<div class="form-group">
+			<label for="readcount">조회수</label>
+			<input type="text" readonly class="form-control" name="readcount" value="${detailContent.readcount }">
+		</div>
+		<div class="form-group">
+			<label for=id>작성자</label>
+			<input type="text" readonly name="id" class="form-control" value="${detailContent.id }">
+		</div>
+		<div class="form-group">
+			<label for="writedate">작성일</label>
+			<fmt:formatDate value="${detailContent.writedate }" pattern="yyyy-MM-dd HH:mm:ss"/>
+		</div>
+		<div class="form-group">
+			<label for="title"><strong>글제목</strong></label>
+			<input type="text" class="form-control" name="title" value="${detailContent.title }">
+		</div>
+		<div class="form-group">
+			<label for="content"><strong>내용</strong></label>
+			<textarea class="form-control" id="content" name="content" rows="10" cols="50">${detailContent.content }</textarea>
+		</div>
+		<div class="form-group">
+			<label for=id>최대인원설정</label>
+			<input type="number" class="form-control" max="10" id="maxpeople" name="maxpeople" value="${detailContent.maxpeople }">
+		</div>
+		<div class="form-group">
+			<label for=id>파일첨부</label>
+			<input type="file" name="file" class="form-control">
+		</div>
+		<div class="form-group">
+			<input type="hidden" name="num" value="${detailContent.num }">
+			<button type="button" id="btnUpdate" class="btn btn-primary btn-xs">수정</button>
+			<button type="button" id="btnDelete" class="btn btn-primary btn-xs">삭제</button>
+			<button type="button" id="btnList" class="btn btn-primary btn-xs">글목록으로</button>
+		</div>
+		</form>			
 	</div>	
-	</form>
-	<%@ include file="bootstrap.jsp" %>
 </body>
 </html>

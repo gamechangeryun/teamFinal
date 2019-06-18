@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%
+    String cp = request.getContextPath(); //첫번째 경로를 가져온다
+	request.setCharacterEncoding("UTF-8");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -131,11 +135,13 @@ function getList(){
 	});
 }
 </script>
+<%@ include file="../bootstrap.jsp" %>
+<link rel="stylesheet" type="text/css" href="../bootstrap.min.css">
 
 </head>
   <body>
     <div class="container">
-    <input type="button" id="insertbtn" value="목차입력" onclick="location.href='/FinalProject/learn/LearnInsertForm.do?lecture_num=${lecture_num}'">
+    <input type="button" id="insertbtn" class="btn btn-primary" value="목차입력" onclick="location.href='/FinalProject/learn/LearnInsertForm.do?lecture_num=${lecture_num}'">
       <div class="row">
     	<input type="hidden" id="rePage" value="${lecture_num }">
     	<!--DB에 내용 없으면  -->    

@@ -30,6 +30,8 @@ $(function(){
 			var cnt = args.data[0].now_checkin;
 			$("#cnt").html(cnt);
 			
+			$("#pro_bar").val(cnt);
+			
 			$("#day option").each(function() {
 				$("#day option:eq(0)").remove();
 			});
@@ -84,14 +86,36 @@ function checkList(){
 }
 
 </script>
+<%@ include file="../bootstrap.jsp" %>
+<link rel="stylesheet" type="text/css" href="../bootstrap.min.css">
+<style type="text/css">
+   body {
+      color: #999;
+      background: #f3f3f3;
+      font-family: 'Roboto', sans-serif;
+      font-weight: normal;
+      font-size: 15px;
+   }
+ </style>
 </head>
 <body>
-<div>출석상황
-<span id="cnt"></span>/31</div>
-<select id='day' name='day' onchange="checkList();">
-	<option value="">::날짜::</option>
-</select>
+<div><strong>현재 출석일 / 전체 출석일 : 
+<span id="cnt"></span>/31</div></strong>
+	<progress id="pro_bar" max="31" value="">출석그래프</progress>
+<br>
+<hr>
+<!--day 선택  -->
+<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+  <div class="btn-group" role="group">
+	<select id='day' name='day' onchange="checkList();" class="btn btn-info dropdown-toggle">
+		<option value="" class="btn btn-info">::날짜::</option>
+	</select>
+  </div>
+</div>
+
+<div>
 <span id="checkDay"></span>
+</div>
 
 <input type="hidden" id="id" value=${id }>
 
