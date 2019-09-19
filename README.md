@@ -14,10 +14,18 @@
 MVC 중에 View 관련 화면구성 목록
 
 src/main/webapp/WEB-INF/view/atten - 출결확인
+
 src/main/webapp/WEB-INF/view/changescore - 성적정정입력
+
 src/main/webapp/WEB-INF/view/learn - 학습목차
+
 src/main/webapp/WEB-INF/view/professor - 교수메인페이지
+
 src/main/webapp/WEB-INF/view/mtmt - 멘토게시판
+
 src/main/webapp/WEB-INF/view/pronotice - 교수공지게시판
+
 src/main/webapp/WEB-INF/view/scoreinput - 성적입력
+
 src/main/webapp/WEB-INF/view/tuition - 등록금조회
+
