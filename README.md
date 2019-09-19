@@ -7,3 +7,17 @@
 결국 지원하지 않는 버전 때문이라는 간단한 사실을 발견했을때 허탈함보다 작동이 된다는 즐거움이 더 컸습니다.
 
 화면에 결과가 나오는것에 즐거움을 느낍니다.
+
+
+
+
+MVC 중에 View 관련 화면구성 목록
+
+src/main/webapp/WEB-INF/view/atten - 출결확인
+src/main/webapp/WEB-INF/view/changescore - 성적정정입력
+src/main/webapp/WEB-INF/view/learn - 학습목차
+src/main/webapp/WEB-INF/view/professor - 교수메인페이지
+src/main/webapp/WEB-INF/view/mtmt - 멘토게시판
+src/main/webapp/WEB-INF/view/pronotice - 교수공지게시판
+src/main/webapp/WEB-INF/view/scoreinput - 성적입력
+src/main/webapp/WEB-INF/view/tuition - 등록금조회
